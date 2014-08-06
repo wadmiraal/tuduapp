@@ -83,16 +83,26 @@ class CloudMailinEmail implements EmailInterface
         } else {
             if ($request->request->get('html', FALSE)) {
                 $html = $request->request->get('html');
+
+                // Normalize new lines.
+                $html = str_replace(array("\r\n", "\r"), "\n", $html);
+
                 // Add new lines after all closing divs or paragraphs, to simulate
                 // plain new lines.
-                $html = str_replace('</div>', "\n", $html);
-                $html = str_replace('</p>', "\n\n", $html);
+                $html = preg_replace('/<\/div\s*>\n*/i', "</div>\n", $html);
+                $html = preg_replace('/<\/p\s*>\n*/i', "</p>\n\n", $html);
 
                 // Replace brs with newlines.
-                $html = preg_replace('/<br\s*\/?>/gi', "\n", $html);
+                $html = preg_replace('/<br\s*\/?>\n*/i', "\n", $html);
 
-                // Finally, remove all tags.
-                return trim(strip_tags($html));
+                // Remove all tags.
+                $html = trim(strip_tags($html));
+
+                // We assume we never have more than 2 subsequent new lines.
+                // Markdown wouldn't parse it like that anyway.
+                $html = preg_replace('/\n{3,}/', "\n\n", $html);
+
+                return $html;
             } else {
                 // We treat this as an empty body.
                 return '';
