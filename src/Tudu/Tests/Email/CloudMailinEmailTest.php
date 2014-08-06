@@ -97,9 +97,6 @@ class CloudMailinEmailTest extends \PHPUnit_Framework_TestCase
 
             $this->assertEquals($data['expected'], $email->getBody(), "Parsing $label.");
         }
-
-
-            //'html'  => '<div dir=\"ltr\">Line 1<div>Line 2</div><p>Line 3</p><div><br></div></div>',
     }
 
 }
