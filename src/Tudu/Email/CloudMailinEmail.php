@@ -79,7 +79,7 @@ class CloudMailinEmail implements EmailInterface
     {
         if ($request->request->get('plain', FALSE)) {
             // Normalize new-lines.
-            return str_replace(array("\r\n", "\r"), "\n", $request->request->get('plain'));
+            return str_replace(array("\r\n", "\r"), "\n", trim($request->request->get('plain')));
         } else {
             if ($request->request->get('html', FALSE)) {
                 $html = $request->request->get('html');

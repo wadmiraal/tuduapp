@@ -24,6 +24,18 @@ class CloudMailinEmailTest extends \PHPUnit_Framework_TestCase
                 'string'   => "Line 1\rLine2\r\n\nLine3",
                 'expected' => "Line 1\nLine2\n\nLine3",
             ),
+            'an email body with trailing white-space' => array(
+                'string'   => "Line 1\rLine2\r\n\nLine3    ",
+                'expected' => "Line 1\nLine2\n\nLine3",
+            ),
+            'an email body with leading white-space' => array(
+                'string'   => "    Line 1\rLine2\r\n\nLine3",
+                'expected' => "Line 1\nLine2\n\nLine3",
+            ),
+            'an email body with leading and trailing white-space' => array(
+                'string'   => "  \n\r  Line 1\rLine2\r\n\nLine3   \r  ",
+                'expected' => "Line 1\nLine2\n\nLine3",
+            ),
         );
 
         foreach ($plainText as $label => $data) {
