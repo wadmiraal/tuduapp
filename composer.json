@@ -1,6 +1,6 @@
 {
     "autoload": {
-        "psr-4": { "Chorizo\\": "src/Chorizo/" }
+        "psr-4": { "Tudu\\": "src/Tudu/" }
     },
     "require": {
         "silex/silex": "~1.2",
