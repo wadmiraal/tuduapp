@@ -1,0 +1,4 @@
+vendor/
+web/bower_components/
+app/config.php
+*.sublime-*
