@@ -1,0 +1,10 @@
+{
+    "autoload": {
+        "psr-4": { "Chorizo\\": "src/Chorizo/" }
+    },
+    "require": {
+        "silex/silex": "~1.2",
+        "doctrine/dbal": "2.2.*"
+    }
+}
+
