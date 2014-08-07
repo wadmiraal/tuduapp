@@ -15,7 +15,9 @@ class CloudMailinEmailTest extends \PHPUnit_Framework_TestCase
 
     public function testEmailParsing()
     {
-        $request = new Request(array(), array(
+        $default = $this->getDefaultRequest(array('plain', 'html'));
+
+        $request = new Request(array(), $default + array(
             'html'  => 'html',
             'plain' => 'plain',
         ));
@@ -48,7 +50,7 @@ class CloudMailinEmailTest extends \PHPUnit_Framework_TestCase
         );
 
         foreach ($plainText as $label => $data) {
-            $request = new Request(array(), array(
+            $request = new Request(array(), $default + array(
                 'plain' => $data['string'],
             ));
 
@@ -89,7 +91,7 @@ class CloudMailinEmailTest extends \PHPUnit_Framework_TestCase
         );
 
         foreach ($htmlText as $label => $data) {
-            $request = new Request(array(), array(
+            $request = new Request(array(), $default + array(
                 'html' => $data['string'],
             ));
 
@@ -97,6 +99,42 @@ class CloudMailinEmailTest extends \PHPUnit_Framework_TestCase
 
             $this->assertEquals($data['expected'], $email->getBody(), "Parsing $label.");
         }
+    }
+
+    /**
+     * Provide a default request representation.
+     *
+     * The CloudMailinEmail class will throw errors if certain keys are not
+     * found in the request. Provide a default array of keys, which can be
+     * overridden for each test's needs.
+     *
+     * @param array $ignoreKeys = array()
+     *   An array of keys to ignore, if necessary.
+     *
+     * @return array
+     *   The default request.
+     */
+    protected function getDefaultRequest(array $ignoreKeys = array())
+    {
+        $default = array(
+            'plain'   => rand(),
+            'html'    => '<div>' . rand() . '</div>',
+            'headers' => array(
+                'Date'       => date('D, d M Y H:i:s O'),
+                'From'       => "John Doe, the second <john.doe-the_second@mail.com.me",
+                'To'         => "Jimmy Jameson <jim@mail.com>",
+                'Message-ID' => rand(),
+                'Subject'    => rand(),
+            ),
+        );
+
+        if (!empty($ignoreKeys)) {
+            foreach ($ignoreKeys as $key) {
+                unset($default[$key]);
+            }
+        }
+
+        return $default;
     }
 
 }
