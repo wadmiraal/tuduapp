@@ -14,6 +14,110 @@ class CloudMailinEmailTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
+     * Test the parsing of the email headers.
+     */
+    public function testEmailHeaderParsing()
+    {
+        $default = $this->getDefaultRequest();
+
+        $rawFrom = array(
+            'a simple raw header should return as is' => array(
+                'string'   => 'john@doe.com',
+                'expected' => 'john@doe.com',
+            ),
+            'a simple raw header should return as is, but trimmed' => array(
+                'string'   => '  john@doe.com    ',
+                'expected' => 'john@doe.com',
+            ),
+            'a complex raw header should return as is' => array(
+                'string'   => '  "John Doe, The second" <john@doe.com>    ',
+                'expected' => '"John Doe, The second" <john@doe.com>',
+            ),
+        );
+
+        foreach ($rawFrom as $label => $data) {
+            $default['headers']['From'] = $data['string'];
+            $request = new Request(array(), $default);
+
+            $email = new CloudMailinEmail($request);
+
+            $this->assertEquals($data['expected'], $email->getFrom(), "Parsing $label.");
+        }
+
+        $fromAddress = array(
+            'a simple from header should return the correct address' => array(
+                'string'   => 'john@doe.com',
+                'expected' => 'john@doe.com',
+            ),
+            'a simple from header should return the correct address, trimmed' => array(
+                'string'   => '    john@doe.com      ',
+                'expected' => 'john@doe.com',
+            ),
+            'a complex from header should return the correct address, with no <>' => array(
+                'string'   => '  "John Doe, The second" <john@doe.com>    ',
+                'expected' => 'john@doe.com',
+            ),
+            'a complex email address in the from header should return the correct address' => array(
+                'string'   => '  "John Doe, The second" <john-doe._.--asd--AS09888987@doe.doe.doe.com>    ',
+                'expected' => 'john-doe._.--asd--AS09888987@doe.doe.doe.com',
+            ),
+            'an incorrect email address in the from header should not be recognized' => array(
+                'string'   => 'john-doe._.--asd--AS098?!88987@doe..doe.doe.com',
+                'expected' => '',
+            ),
+            'a name resembling an email address in the from header should not be used instead of the actual address' => array(
+                'string'   => 'john@doe.com <jane@doe.com>',
+                'expected' => 'jane@doe.com',
+            ),
+        );
+
+        foreach ($fromAddress as $label => $data) {
+            $default['headers']['From'] = $data['string'];
+            $request = new Request(array(), $default);
+
+            $email = new CloudMailinEmail($request);
+
+            $this->assertEquals($data['expected'], $email->getFromAddress(), "Parsing $label.");
+        }
+
+        $fromName = array(
+            'a simple from header with no name should return an empty string' => array(
+                'string'   => 'john@doe.com',
+                'expected' => '',
+            ),
+            'a complex from header with no name should return an empty string' => array(
+                'string'   => '  <john@doe.com>',
+                'expected' => '',
+            ),
+            'a header with a simple name should just return the name' => array(
+                'string'   => 'John Doe <john@doe.com>',
+                'expected' => 'John Doe',
+            ),
+            'a header with a simple name should just return the name, no double quotes' => array(
+                'string'   => '"John Doe" <john@doe.com>',
+                'expected' => 'John Doe',
+            ),
+            'a header with a simple name should just return the name, no single quotes' => array(
+                'string'   => "'John Doe' <john@doe.com>",
+                'expected' => 'John Doe',
+            ),
+            'a header can contain a name with special characters' => array(
+                'string'   => '"John Doe, l\'asplééààéàéèt % ?/)(_--" <john@doe.com>',
+                'expected' => 'John Doe, l\'asplééààéàéèt % ?/)(_--',
+            ),
+        );
+
+        foreach ($fromName as $label => $data) {
+            $default['headers']['From'] = $data['string'];
+            $request = new Request(array(), $default);
+
+            $email = new CloudMailinEmail($request);
+
+            $this->assertEquals($data['expected'], $email->getFromName(), "Parsing $label.");
+        }
+    }
+
+    /**
      * Test the parsing of the email body.
      */
     public function testEmailBodyParsing()

@@ -157,16 +157,16 @@ class CloudMailinEmail implements EmailInterface
         if ($headers = $request->request->get('headers', FALSE)) {
             if (!empty($headers['From'])) {
                 $result = array(
-                //    'raw' => $headers['From'],
+                    'raw' => trim($headers['From']),
                 );
 
                 $match = array();
-                preg_match('/(.+)\s*</', $headers['From'], $match);
-                //$result['name'] = !empty($match[1]) ? $match[1] : '';
+                preg_match('/(.+)\s*</', $result['raw'], $match);
+                $result['name'] = !empty($match[1]) ? trim($match[1], ' "\'') : '';
 
                 $match = array();
-                preg_match('/[\w._%+-]+@[\w.-]+\.\w{2,4}/i', $headers['From'], $match);
-                //$result['address'] = !empty($match[0]) ? $match[0] : '';
+                preg_match('/(\s|.<|^)([\w._%+-]+@[\w.-]+\.\w{2,4})>?$/i', $result['raw'], $match);
+                $result['address'] = !empty($match[2]) ? $match[2] : '';
 
                 return $result;
             }
