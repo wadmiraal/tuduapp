@@ -101,7 +101,7 @@ class CloudMailinEmailTest extends \PHPUnit_Framework_TestCase
                 'string'   => "'John Doe' <john@doe.com>",
                 'expected' => 'John Doe',
             ),
-            'a header can contain a name with special characters' => array(
+            'a header can that contains a name with special characters should work' => array(
                 'string'   => '"John Doe, l\'asplééààéàéèt % ?/)(_--" <john@doe.com>',
                 'expected' => 'John Doe, l\'asplééààéàéèt % ?/)(_--',
             ),
@@ -114,6 +114,54 @@ class CloudMailinEmailTest extends \PHPUnit_Framework_TestCase
             $email = new CloudMailinEmail($request);
 
             $this->assertEquals($data['expected'], $email->getFromName(), "Parsing $label.");
+        }
+
+        $subject = array(
+            'a simple subject should return it verbatim' => array(
+                'string'   => 'Subject',
+                'expected' => 'Subject',
+            ),
+            'a simple subject should return it trimmed' => array(
+                'string'   => '     Subject    ',
+                'expected' => 'Subject',
+            ),
+            'a header with no subject should just return an empty string' => array(
+                'string'   => null,
+                'expected' => '',
+            ),
+        );
+
+        foreach ($subject as $label => $data) {
+            $default['headers']['Subject'] = $data['string'];
+            $request = new Request(array(), $default);
+
+            $email = new CloudMailinEmail($request);
+
+            $this->assertEquals($data['expected'], $email->getSubject(), "Parsing $label.");
+        }
+
+        $messageID = array(
+            'a simple message ID should return it verbatim' => array(
+                'string'   => '890asdjhgkasf90-sdfsdffsdf--sdf8s@df089sdfsdf',
+                'expected' => '890asdjhgkasf90-sdfsdffsdf--sdf8s@df089sdfsdf',
+            ),
+            'a simple message ID should return it trimmed' => array(
+                'string'   => '     890asdjhgksdasdsaddasf90-sdfsdffsdf--sdf8s@df089sdfsdf    ',
+                'expected' => '890asdjhgksdasdsaddasf90-sdfsdffsdf--sdf8s@df089sdfsdf',
+            ),
+            'a header with no message ID should just return an empty string' => array(
+                'string'   => null,
+                'expected' => '',
+            ),
+        );
+
+        foreach ($messageID as $label => $data) {
+            $default['headers']['Message-ID'] = $data['string'];
+            $request = new Request(array(), $default);
+
+            $email = new CloudMailinEmail($request);
+
+            $this->assertEquals($data['expected'], $email->getMessageID(), "Parsing $label.");
         }
     }
 

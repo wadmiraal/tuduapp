@@ -54,4 +54,24 @@ interface EmailInterface
      */
     public function getFromName();
 
+    /**
+     * Get the email subject, if any.
+     *
+     * Return the subject of the email, or an empty string if it's not available.
+     *
+     * @return string
+     *   The subject of the email, or an empty string.
+     */
+    public function getSubject();
+
+    /**
+     * Get the email message ID, if any.
+     *
+     * Return the subject of the email, or an empty string if it's not available.
+     *
+     * @return string
+     *   The subject of the email, or an empty string.
+     */
+    public function getMessageID();
+
 }

@@ -24,7 +24,7 @@ class CloudMailinEmail implements EmailInterface
     protected $subject;
     protected $to;
     protected $from;
-    protected $messageId;
+    protected $messageID;
 
     /**
      * Parse the passed POST request.
@@ -48,7 +48,9 @@ class CloudMailinEmail implements EmailInterface
         switch ($mode) {
             case CloudMailinEmail::MULTIPART:
                 $this->body = $this->extractMultipartBody($request);
+                $this->subject = $this->extractMultipartSubject($request);
                 $this->from = $this->extractMultipartFrom($request);
+                $this->messageID = $this->extractMultipartMessageID($request);
                 break;
 
             default:
@@ -63,6 +65,14 @@ class CloudMailinEmail implements EmailInterface
     public function getBody()
     {
         return $this->body;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSubject()
+    {
+        return $this->subject;
     }
 
     /**
@@ -87,6 +97,14 @@ class CloudMailinEmail implements EmailInterface
     public function getFromName()
     {
         return $this->from['name'];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMessageID()
+    {
+        return $this->messageID;
     }
 
     /**
@@ -136,9 +154,31 @@ class CloudMailinEmail implements EmailInterface
     }
 
     /**
+     * Extract the "Subject" header information.
+     *
+     * @param Symfony\Component\HttpFoundation\Request $request
+     *   The request object. Must be a POST (or PUT) request.
+     *
+     * @return string
+     *
+     * @throws Exception
+     *   If the request contains no headers, it will throw an error.
+     */
+    protected function extractMultipartSubject(Request $request)
+    {
+        if ($headers = $request->request->get('headers', FALSE)) {
+            if (!empty($headers['Subject'])) {
+                return trim($headers['Subject']);
+            } else {
+                return '';
+            }
+        }
+
+        throw new \Exception("No headers found.");
+    }
+
+    /**
      * Extract the "From" header information.
-     *
-     *
      *
      * @param Symfony\Component\HttpFoundation\Request $request
      *   The request object. Must be a POST (or PUT) request.
@@ -169,6 +209,30 @@ class CloudMailinEmail implements EmailInterface
                 $result['address'] = !empty($match[2]) ? $match[2] : '';
 
                 return $result;
+            }
+        }
+
+        throw new \Exception("No headers found.");
+    }
+
+    /**
+     * Extract the "Message-ID" header information.
+     *
+     * @param Symfony\Component\HttpFoundation\Request $request
+     *   The request object. Must be a POST (or PUT) request.
+     *
+     * @return string
+     *
+     * @throws Exception
+     *   If the request contains no headers, it will throw an error.
+     */
+    protected function extractMultipartMessageID(Request $request)
+    {
+        if ($headers = $request->request->get('headers', FALSE)) {
+            if (!empty($headers['Message-ID'])) {
+                return trim($headers['Message-ID']);
+            } else {
+                return '';
             }
         }
 
