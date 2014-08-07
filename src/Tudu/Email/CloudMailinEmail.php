@@ -31,7 +31,7 @@ class CloudMailinEmail implements EmailInterface
      *
      * Use the Symfony\Component\HttpFoundation\Request object to parse the
      * request and extract all required information.
-     * The way the data way given through POST can be set through the $mode
+     * The way the data was given through POST can be set through the $mode
      * parameter.
      *
      * @param Symfony\Component\HttpFoundation\Request $request
@@ -41,17 +41,18 @@ class CloudMailinEmail implements EmailInterface
      *   CloudMailinEmail::RAW
      *
      * @throws Exception
-     *   If the passed mode is not implemented or unknown, will throw an error.
+     *   If the passed mode is not implemented or unknown, it throw an error.
      */
     public function __construct(Request $request, $mode = CloudMailinEmail::MULTIPART)
     {
         switch ($mode) {
             case CloudMailinEmail::MULTIPART:
                 $this->body = $this->extractMultipartBody($request);
+                $this->from = $this->extractMultipartFrom($request);
                 break;
 
             default:
-                throw new Exception("Mode is not available or not implemented yet.");
+                throw new \Exception("Mode is not available or not implemented yet.");
                 break;
         }
     }
@@ -62,6 +63,30 @@ class CloudMailinEmail implements EmailInterface
     public function getBody()
     {
         return $this->body;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFrom()
+    {
+        return $this->from['raw'];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFromAddress()
+    {
+        return $this->from['address'];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFromName()
+    {
+        return $this->from['name'];
     }
 
     /**
@@ -108,6 +133,46 @@ class CloudMailinEmail implements EmailInterface
                 return '';
             }
         }
+    }
+
+    /**
+     * Extract the "From" header information.
+     *
+     *
+     *
+     * @param Symfony\Component\HttpFoundation\Request $request
+     *   The request object. Must be a POST (or PUT) request.
+     *
+     * @return array
+     *   An associative array, with the following keys:
+     *   - raw: The raw From header.
+     *   - name: The name of the sender, or an empty string.
+     *   - address: The address of the sender.
+     *
+     * @throws Exception
+     *   If the request contains no From header, it will throw an error.
+     */
+    protected function extractMultipartFrom(Request $request)
+    {
+        if ($headers = $request->request->get('headers', FALSE)) {
+            if (!empty($headers['From'])) {
+                $result = array(
+                //    'raw' => $headers['From'],
+                );
+
+                $match = array();
+                preg_match('/(.+)\s*</', $headers['From'], $match);
+                //$result['name'] = !empty($match[1]) ? $match[1] : '';
+
+                $match = array();
+                preg_match('/[\w._%+-]+@[\w.-]+\.\w{2,4}/i', $headers['From'], $match);
+                //$result['address'] = !empty($match[0]) ? $match[0] : '';
+
+                return $result;
+            }
+        }
+
+        throw new \Exception("No headers found.");
     }
 
 }

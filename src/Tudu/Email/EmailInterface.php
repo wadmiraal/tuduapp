@@ -24,4 +24,34 @@ interface EmailInterface
      */
     public function getBody();
 
+    /**
+     * Get the sender's "From" header.
+     *
+     * @return string
+     *   The email "From" header.
+     */
+    public function getFrom();
+
+    /**
+     * Get the sender's email address.
+     *
+     * Return only the address of the sender, removing name and other
+     * information if present.
+     *
+     * @return string
+     *   The email address from the sender.
+     */
+    public function getFromAddress();
+
+    /**
+     * Get the sender's name, if any.
+     *
+     * Return only the name of the sender, removing address and other
+     * information if present.
+     *
+     * @return string
+     *   The name of the sender, or an empty string.
+     */
+    public function getFromName();
+
 }
