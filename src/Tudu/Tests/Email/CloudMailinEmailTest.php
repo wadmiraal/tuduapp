@@ -13,7 +13,10 @@ use Symfony\Component\HttpFoundation\Request;
 class CloudMailinEmailTest extends \PHPUnit_Framework_TestCase
 {
 
-    public function testEmailParsing()
+    /**
+     * Test the parsing of the email body.
+     */
+    public function testEmailBodyParsing()
     {
         $default = $this->getDefaultRequest(array('plain', 'html'));
 
