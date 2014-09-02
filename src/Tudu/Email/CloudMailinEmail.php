@@ -25,6 +25,7 @@ class CloudMailinEmail implements EmailInterface
     protected $to;
     protected $from;
     protected $messageID;
+    protected $recipients;
 
     /**
      * Parse the passed POST request.
@@ -51,6 +52,7 @@ class CloudMailinEmail implements EmailInterface
                 $this->subject = $this->extractMultipartSubject($request);
                 $this->from = $this->extractMultipartFrom($request);
                 $this->messageID = $this->extractMultipartMessageID($request);
+                $this->recipients = $this->extractMultipartRecipients($request);
                 break;
 
             default:
@@ -105,6 +107,14 @@ class CloudMailinEmail implements EmailInterface
     public function getMessageID()
     {
         return $this->messageID;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRecipients()
+    {
+        return $this->recipients;
     }
 
     /**
@@ -200,13 +210,9 @@ class CloudMailinEmail implements EmailInterface
                     'raw' => trim($headers['From']),
                 );
 
-                $match = array();
-                preg_match('/(.+)\s*</', $result['raw'], $match);
-                $result['name'] = !empty($match[1]) ? trim($match[1], ' "\'') : '';
+                $result['name'] = $this->extractRecipientName($result['raw']);
 
-                $match = array();
-                preg_match('/(\s|.<|^)([\w._%+-]+@[\w.-]+\.\w{2,4})>?$/i', $result['raw'], $match);
-                $result['address'] = !empty($match[2]) ? $match[2] : '';
+                $result['address'] = $this->extractRecipientAddress($result['raw']);
 
                 return $result;
             }
@@ -237,6 +243,68 @@ class CloudMailinEmail implements EmailInterface
         }
 
         throw new \Exception("No headers found.");
+    }
+
+    /**
+     * Extract the "CC" header information.
+     *
+     * @param Symfony\Component\HttpFoundation\Request $request
+     *   The request object. Must be a POST (or PUT) request.
+     *
+     * @return string
+     *
+     * @throws Exception
+     *   If the request contains no headers, it will throw an error.
+     */
+    protected function extractMultipartRecipients(Request $request)
+    {
+        if ($headers = $request->request->get('headers', FALSE)) {
+            if (!empty($headers['Cc'])) {
+                return trim($headers['Cc']);
+            } else {
+                return '';
+            }
+        }
+
+        throw new \Exception("No headers found.");
+    }
+
+    /**
+     * Extract the name information from an RFC email recipient string.
+     *
+     * Extract the name of a recipient from a string like
+     * "John Doe <john.doe@domain.com>".
+     *
+     * @param string $recipient
+     *   The raw recipient string.
+     *
+     * @return string
+     *   The extracted name, or an empty string if none was found.
+     */
+    protected function extractRecipientName($recipient)
+    {
+        $match = array();
+        preg_match('/(.+)\s*</', $recipient, $match);
+        return !empty($match[1]) ? trim($match[1], ' "\'') : '';
+    }
+
+    /**
+     * Extract the address information from an RFC email recipient string.
+     *
+     * Extract the address of a recipient from a string like
+     * "John Doe <john.doe@domain.com>".
+     *
+     * @param string $recipient
+     *   The raw recipient string.
+     *
+     * @return string
+     *   The extracted address.
+     */
+    protected function extractRecipientAddress($recipient)
+    {
+        $match = array();
+        preg_match('/(\s|.<|^)([\w._%+-]+@[\w.-]+\.\w{2,4})>?$/i', $recipient, $match);
+        return !empty($match[2]) ? $match[2] : '';
     }
 
 }
