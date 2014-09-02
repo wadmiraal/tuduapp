@@ -282,7 +282,7 @@ class Todo
                  WHERE  id = :id
             ");
         } else {
-            $this->id = uniqid();
+            $this->id = uniqid('', true);
             $this->created = $this->lastUpdated = date('Y-m-d H:i:s');
 
             if (empty($this->notifyParticipants)) {
