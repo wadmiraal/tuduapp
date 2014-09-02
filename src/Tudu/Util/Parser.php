@@ -39,23 +39,27 @@ class Parser
      * @param string $body
      *   The email body.
      *
-     * @return Parser::DONE|Parser::ADD|Parser::DELETE|Parser::RESET|Parser::COMMENT
-     *   The action to take on the list. Defaults to Parser::COMMENT.
+     * @return array
+     *   An array with 2 elements. The first element is one of Parser::DONE,
+     *   Parser::ADD, Parser::DELETE, Parser::RESET or Parser::COMMENT.
+     *   The second one is the parameter for the action.
      */
     public static function extractAction($body)
     {
-        $body = trim($body);
+        $body = trim(str_replace(array("\r\n", "\r"), "\n", $body));
+        $match = array();
 
-        if (preg_match('/^add\s*:/i', $body)) {
-            return self::ADD;
-        } else if (preg_match('/^delete\s*[0-9]+/i', $body)) {
-            return self::DELETE;
-        } else if (preg_match('/^done\s*[0-9]+/i', $body)) {
-            return self::DONE;
-        } else if (preg_match('/^reset\s*[0-9]+/i', $body)) {
-            return self::RESET;
+        if (preg_match('/^add\s*:\n*(.+)/i', $body, $match)) {
+            return array(self::ADD, trim($match[1]));
+        } else if (preg_match('/^delete\s*([0-9]+)/i', $body, $match)) {
+            return array(self::DELETE, (int) $match[1]);
+        } else if (preg_match('/^done\s*([0-9]+)+/i', $body, $match)) {
+            return array(self::DONE, (int) $match[1]);
+        } else if (preg_match('/^reset\s*([0-9]+)+/i', $body, $match)) {
+            return array(self::RESET, (int) $match[1]);
         } else {
-            return self::COMMENT;
+            $parts = explode("\n\n", $body);
+            return array(self::COMMENT, $parts[0]);
         }
     }
 }
