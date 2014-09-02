@@ -6,4 +6,7 @@ php:
 
 install:
   - composer install
+  - mkdir -p build/logs
 script: phpunit
+after_script:
+  - php vendor/bin/coveralls

@@ -5,11 +5,8 @@
             <directory>src/Tudu/Tests/</directory>
         </testsuite>
     </testsuites>
-    <!-- If ever we want to use a service like Coveralls -->
-    <!--
     <logging>
         <log type="coverage-html" target="coverage-report"/>
         <log type="coverage-clover" target="build/logs/clover.xml"/>
     </logging>
-    -->
 </phpunit>
