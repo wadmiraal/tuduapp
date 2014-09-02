@@ -1,0 +1,37 @@
+<?php
+
+/**
+ * @file
+ * Application configuration.
+ */
+
+$conf['db.options'] = array(
+    'driver'   => 'pdo_sqlite',
+    'path'     => __DIR__ . '/app.db',
+);
+
+$conf['tudu.emails.create'] = 'new@tuduapp.com';
+$conf['tudu.emails.update'] = 'please-reply@tuduapp.com';
+$conf['tudu.emails.names'] = array(
+    'Tudu, Your Humble Servant',
+    'Tudu, With Great Speed',
+    'Tudu, Tasks With Style',
+    'Tudu, Tudududadidadu',
+    'Tudu, At Your Service',
+    'Tudu, With Love',
+);
+
+$signatures = array(
+    'Well, see you later.',
+    'Have a great day !',
+    'Hope reading you soon.',
+    'Thank you for using me ! I really appreciate it !',
+    'What a fine day to check of some these tasks !',
+    'Keep up the good work.',
+);
+$conf['tudu.emails.signatures.html'] = array_map(function($item) {
+    return "$item\n<br />\n<em>-- Tudu</em>";
+}, $signatures);
+$conf['tudu.emails.signatures.plain'] = array_map(function($item) {
+    return "$item\n-- Tudu";
+}, $signatures);
