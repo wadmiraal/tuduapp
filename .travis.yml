@@ -5,7 +5,7 @@ php:
   - hhvm
 
 install:
-  - composer install
+  - composer install --dev
   - mkdir -p build/logs
 script: phpunit
 after_script:
