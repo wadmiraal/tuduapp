@@ -205,14 +205,14 @@ class Todo
         $participant = new Participant($this->connection);
 
         if (!empty($this->id)) {
-            $participant->setTodoId($this->id);
+            $participant->setTodoID($this->id);
         }
 
         $participant->setEmail($email);
         $participant->setName($name);
 
         if ($lastMessageId) {
-            $participant->setLastMessageId($lastMessageId);
+            $participant->setLastMessageID($lastMessageId);
         }
 
         $this->participants[] = $participant;

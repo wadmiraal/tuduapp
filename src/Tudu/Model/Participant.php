@@ -22,7 +22,7 @@ class Participant
      * @var string $id
      *   The UUID of the task list.
      */
-    protected $todoId;
+    protected $todoID;
 
     /**
      * @var string $email
@@ -37,10 +37,10 @@ class Participant
     protected $name;
 
     /**
-     * @var string $lastMessageId
+     * @var string $lastMessageID
      *   The last message ID of the participant.
      */
-    protected $lastMessageId;
+    protected $lastMessageID;
 
     /**
      * Constructor.
@@ -56,12 +56,12 @@ class Participant
     /**
      * Set the ID of the list.
      *
-     * @param string $todoId
+     * @param string $todoID
      *   The ID of the list.
      */
-    public function setTodoId($todoId)
+    public function setTodoID($todoID)
     {
-        $this->todoId = $todoId;
+        $this->todoID = $todoID;
     }
 
     /**
@@ -70,9 +70,9 @@ class Participant
      * @return string
      *   The ID of the list.
      */
-    public function getTodoId()
+    public function getTodoID()
     {
-        return $this->todoId;
+        return $this->todoID;
     }
 
     /**
@@ -122,12 +122,12 @@ class Participant
     /**
      * Set the last message ID of the participant.
      *
-     * @param string $lastMessageId
+     * @param string $lastMessageID
      *   The last message ID of the participant.
      */
-    public function setLastMessageId($lastMessageId)
+    public function setLastMessageID($lastMessageID)
     {
-        $this->lastMessageId = $lastMessageId;
+        $this->lastMessageID = $lastMessageID;
     }
 
     /**
@@ -136,9 +136,9 @@ class Participant
      * @return string
      *   The last message ID of the participant.
      */
-    public function getLastMessageId()
+    public function getLastMessageID()
     {
-        return $this->lastMessageId;
+        return $this->lastMessageID;
     }
 
     /**
@@ -149,10 +149,10 @@ class Participant
      */
     public function loadFromDBRow(array $row)
     {
-        $this->todoId = $row['todo_id'];
+        $this->todoID = $row['todo_id'];
         $this->email = $row['email'];
         $this->name = $row['name'];
-        $this->lastMessageId = $row['last_message_id'];
+        $this->lastMessageID = $row['last_message_id'];
     }
 
     /**
@@ -166,7 +166,7 @@ class Participant
             DELETE FROM  participants
                   WHERE  email = :email AND todo_id = :todo_id
         ");
-        $stmt->bindValue('todo_id', $this->todoId);
+        $stmt->bindValue('todo_id', $this->todoID);
         $stmt->bindValue('email', $this->email);
         $stmt->execute();
 
@@ -175,18 +175,18 @@ class Participant
             $this->name = $this->email;
         }
 
-        if (empty($this->lastMessageId)) {
-            $this->lastMessageId = 0;
+        if (empty($this->lastMessageID)) {
+            $this->lastMessageID = 0;
         }
 
         $stmt = $this->connection->prepare("
             INSERT INTO  participants
                  VALUES  (:email, :todo_id, :name, :last_message_id)
         ");
-        $stmt->bindValue('todo_id', $this->todoId);
+        $stmt->bindValue('todo_id', $this->todoID);
         $stmt->bindValue('email', $this->email);
         $stmt->bindValue('name', $this->name);
-        $stmt->bindValue('last_message_id', $this->lastMessageId);
+        $stmt->bindValue('last_message_id', $this->lastMessageID);
 
         $stmt->execute();
     }
