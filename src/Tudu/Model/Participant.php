@@ -160,15 +160,16 @@ class Participant
      */
     public function save()
     {
-        // To avoid duplicates, we remove past participants, if any, and insert
-        // theme again.
+        // To avoid duplicates, we check if the participant already existed.
         $stmt = $this->connection->prepare("
-            DELETE FROM  participants
-                  WHERE  email = :email AND todo_id = :todo_id
+            SELECT  *
+              FROM  participants
+             WHERE  email = :email AND todo_id = :todo_id
         ");
         $stmt->bindValue('todo_id', $this->todoID);
         $stmt->bindValue('email', $this->email);
         $stmt->execute();
+        $prev_data = $stmt->fetch(\PDO::FETCH_ASSOC);
 
         // Make sure we have a name and last message ID.
         if (empty($this->name)) {
@@ -179,10 +180,20 @@ class Participant
             $this->lastMessageID = 0;
         }
 
-        $stmt = $this->connection->prepare("
-            INSERT INTO  participants
-                 VALUES  (:email, :todo_id, :name, :last_message_id)
-        ");
+        // If we already had an entry, we update. Else, we insert.
+        if (!empty($prev_data['todo_id'])) {
+            $stmt = $this->connection->prepare("
+                UPDATE  participants
+                   SET  name = :name, last_message_id = :last_message_id
+                 WHERE  todo_id = :todo_id AND email = :email
+            ");
+        } else {
+            $stmt = $this->connection->prepare("
+                INSERT INTO  participants
+                     VALUES  (:email, :todo_id, :name, :last_message_id)
+            ");
+        }
+
         $stmt->bindValue('todo_id', $this->todoID);
         $stmt->bindValue('email', $this->email);
         $stmt->bindValue('name', $this->name);
