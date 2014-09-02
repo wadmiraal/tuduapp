@@ -50,11 +50,23 @@ class Main
                 break;
 
             case $conf['tudu.emails.update']:
+                $todoID = Parser::extractTodoID($email->getSubject());
+
+                if (!empty($todoID)) {
+                    $todo = $app['todo_db_service'];
+                    $todo->load($todoID);
+                }
+
+                if (empty($todo)) {
+                    // @todo Notify sender the email was not usable.
+                    return new Response("Incorrect 'To' address. Received: {$to}", 400);
+                }
+
+                list($action, $parameter) = Parser::extractAction($email->getBody());
+
+
+
                 // @todo:
-                // - get the list ID and load the correct Todo list.
-                // - if the list does not exist, exit
-                // - parse the body so as to know what to do. Create a Util
-                //   class for this ?
                 // - update the list as needed (if needed)
                 // - load the email sender, and update her participant entry
                 //   (because of the message ID)
@@ -62,6 +74,7 @@ class Main
                 break;
 
             default:
+                // @todo Notify sender the email was not usable.
                 $to = $email->getTo();
                 return new Response("Incorrect 'To' address. Received: {$to}", 400);
         }
