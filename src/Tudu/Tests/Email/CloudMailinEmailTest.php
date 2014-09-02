@@ -223,6 +223,21 @@ class CloudMailinEmailTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
+            'a complex CC header, with multiple invalid recipients' => array(
+                'string'   => 'John Doe <john.doe@gmail.com>,, jimmy carter, jim@jane, Jane Doe <jane.doe@gmail.com>',
+                'expected' => array(
+                    array(
+                        'address' => 'john.doe@gmail.com',
+                        'name' => 'John Doe',
+                        'raw' => 'John Doe <john.doe@gmail.com>',
+                    ),
+                    array(
+                        'address' => 'jane.doe@gmail.com',
+                        'name' => 'Jane Doe',
+                        'raw' => 'Jane Doe <jane.doe@gmail.com>',
+                    ),
+                ),
+            ),
         );
 
         foreach ($recipients as $label => $data) {

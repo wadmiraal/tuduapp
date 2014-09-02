@@ -260,20 +260,26 @@ class CloudMailinEmail implements EmailInterface
     {
         if ($headers = $request->request->get('headers', FALSE)) {
             if (!empty($headers['Cc'])) {
-                return array_filter(array_map(function($item) {
+                return array_values(array_filter(array_map(function($item) {
                     $recipient = array(
                         'raw' => trim($item),
                     );
 
+                    // If the trimmed string is empty, we can just skip it.
                     if (!empty($recipient['raw'])) {
-                        $recipient['name'] = $this->extractRecipientName($recipient['raw']);
                         $recipient['address'] = $this->extractRecipientAddress($recipient['raw']);
 
-                        return $recipient;
+                        // If there's no email address, we skip it.
+                        if (!empty($recipient['address'])) {
+                            $recipient['name'] = $this->extractRecipientName($recipient['raw']);
+                            return $recipient;
+                        } else {
+                            return null;
+                        }
                     } else {
-                        return 'asd';
+                        return null;
                     }
-                }, explode(',', $headers['Cc'])));
+                }, explode(',', $headers['Cc']))));
             } else {
                 return null;
             }
