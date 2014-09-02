@@ -163,6 +163,76 @@ class CloudMailinEmailTest extends \PHPUnit_Framework_TestCase
 
             $this->assertEquals($data['expected'], $email->getMessageID(), "Parsing $label.");
         }
+
+        $recipients = array(
+            'a simple, empty CC header' => array(
+                'string'   => '',
+                'expected' => null,
+            ),
+            'a simple CC header, with only one recipient (no name)' => array(
+                'string'   => 'john.doe@gmail.com',
+                'expected' => array(array(
+                    'address' => 'john.doe@gmail.com',
+                    'name' => '',
+                    'raw' => 'john.doe@gmail.com',
+                )),
+            ),
+            'a simple CC header, with only one recipient (with name)' => array(
+                'string'   => 'John Doe <john.doe@gmail.com>',
+                'expected' => array(array(
+                    'address' => 'john.doe@gmail.com',
+                    'name' => 'John Doe',
+                    'raw' => 'John Doe <john.doe@gmail.com>',
+                )),
+            ),
+            'a complex CC header, with only one recipient (with name)' => array(
+                'string'   => '              üéà-èàèéasd@asdjk <john.doe@gmail.com>  ',
+                'expected' => array(array(
+                    'address' => 'john.doe@gmail.com',
+                    'name' => 'üéà-èàèéasd@asdjk',
+                    'raw' => 'üéà-èàèéasd@asdjk <john.doe@gmail.com>',
+                )),
+            ),
+            'a simple CC header, with multiple recipients (no name)' => array(
+                'string'   => 'john.doe@gmail.com, jane.doe@gmail.com',
+                'expected' => array(
+                    array(
+                        'address' => 'john.doe@gmail.com',
+                        'name' => '',
+                        'raw' => 'john.doe@gmail.com',
+                    ),
+                    array(
+                        'address' => 'jane.doe@gmail.com',
+                        'name' => '',
+                        'raw' => 'jane.doe@gmail.com',
+                    ),
+                ),
+            ),
+            'a simple CC header, with multiple recipients (with name)' => array(
+                'string'   => 'John Doe <john.doe@gmail.com>, Jane Doe <jane.doe@gmail.com>',
+                'expected' => array(
+                    array(
+                        'address' => 'john.doe@gmail.com',
+                        'name' => 'John Doe',
+                        'raw' => 'John Doe <john.doe@gmail.com>',
+                    ),
+                    array(
+                        'address' => 'jane.doe@gmail.com',
+                        'name' => 'Jane Doe',
+                        'raw' => 'Jane Doe <jane.doe@gmail.com>',
+                    ),
+                ),
+            ),
+        );
+
+        foreach ($recipients as $label => $data) {
+            $default['headers']['Cc'] = $data['string'];
+            $request = new Request(array(), $default);
+
+            $email = new CloudMailinEmail($request);
+
+            $this->assertEquals($data['expected'], $email->getRecipients(), "Parsing $label.");
+        }
     }
 
     /**
@@ -276,8 +346,9 @@ class CloudMailinEmailTest extends \PHPUnit_Framework_TestCase
             'html'    => '<div>' . rand() . '</div>',
             'headers' => array(
                 'Date'       => date('D, d M Y H:i:s O'),
-                'From'       => "John Doe, the second <john.doe-the_second@mail.com.me",
+                'From'       => "John Doe, the second <john.doe-the_second@mail.com.me>",
                 'To'         => "Jimmy Jameson <jim@mail.com>",
+                'Cc'         => "Whallas <whallas.gromit@gmail>, Jane Eyre <jane.the-one-and-only@literature.co.uk>",
                 'Message-ID' => rand(),
                 'Subject'    => rand(),
             ),

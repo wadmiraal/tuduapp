@@ -251,7 +251,7 @@ class CloudMailinEmail implements EmailInterface
      * @param Symfony\Component\HttpFoundation\Request $request
      *   The request object. Must be a POST (or PUT) request.
      *
-     * @return string
+     * @return array|null
      *
      * @throws Exception
      *   If the request contains no headers, it will throw an error.
@@ -260,9 +260,22 @@ class CloudMailinEmail implements EmailInterface
     {
         if ($headers = $request->request->get('headers', FALSE)) {
             if (!empty($headers['Cc'])) {
-                return trim($headers['Cc']);
+                return array_filter(array_map(function($item) {
+                    $recipient = array(
+                        'raw' => trim($item),
+                    );
+
+                    if (!empty($recipient['raw'])) {
+                        $recipient['name'] = $this->extractRecipientName($recipient['raw']);
+                        $recipient['address'] = $this->extractRecipientAddress($recipient['raw']);
+
+                        return $recipient;
+                    } else {
+                        return 'asd';
+                    }
+                }, explode(',', $headers['Cc'])));
             } else {
-                return '';
+                return null;
             }
         }
 
