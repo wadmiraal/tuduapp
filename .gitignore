@@ -1,4 +1,7 @@
 vendor/
 web/bower_components/
 app/config.php
+Prototype/.sass-cache/
+
 *.sublime-*
+Prototype/emails.log
