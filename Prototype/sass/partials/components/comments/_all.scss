@@ -1,0 +1,40 @@
+/**
+ * @file
+ * Defines the comments styles.
+ */
+
+.comments {
+  list-style: none;
+  padding: 0;
+}
+
+.comments__comment {
+  line-height: 1.5;
+  overflow: hidden;
+  padding-right: 50px;
+}
+
+.comments__comment:nth-child(even) {
+  text-align: right;
+  padding-right: 0;
+  padding-left: 50px;
+}
+
+.comments__comment + .comments__comment {
+  margin-top: 1em;
+}
+
+.comments__comment--view-more {
+  text-align: center !important;
+  padding: 0 !important;
+}
+
+.comments__comment__user {
+  font-size: .8em;
+  font-style: italic;
+}
+
+.comments__comment__body {
+  display: block;
+  clear: left;
+}

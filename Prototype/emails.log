@@ -1,0 +1,378 @@
+Array
+(
+    [message] => Received: by mail-lb0-f174.google.com with SMTP id c11so1788907lbj.19
+        for <728aa53e8b00100c561d@cloudmailin.net>; Wed, 06 Aug 2014 04:21:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to
+         :content-type;
+        bh=EDo/bzGFEyYNkUOQ7ojmu++zWaUu4V9ycrZIr+TMxUM=;
+        b=NWCkn/AKQX0YNj7Vww83Ma7YVL0Uxw4o/Xx6AYW750WCYuIsqVEUBnPyMNFtF5ofCt
+         XcmVLNus/FnsTBBn9kxvnF/fWTFTgRedGMdjDh97MPZwW8LlzQZ8kiYMj68aeyyuzVcb
+         W5TYa2FokpuH7VAhmzx8WoKCSgjkEMwz2KmxYtTyfQYjmB2u0nyx2aOREH7/gsXfwXcJ
+         KPDjw3Yaq67lp4gbHH0mCLi85EjVLsS6zWYMrnUi0/Pv0pDDAs2W3FLB9dmSqqzerTgb
+         PnbfXW04vhCXaa2zV2L/OMZ2/tjKoPc1LxIFcwyM+TVJEZSdM8pH9aVGVbCXXnNrXqll
+         r0FA==
+X-Gm-Message-State: ALoCoQlMcIC8zC5yGBD6qhNVNKJQxMz53aHrT/SWUldx9HKXoTYVu9LNYi0jn7HhuAXhk6qdXs2Z
+MIME-Version: 1.0
+X-Received: by 10.152.42.135 with SMTP id o7mr10420736lal.77.1407324084086;
+ Wed, 06 Aug 2014 04:21:24 -0700 (PDT)
+Received: by 10.112.64.236 with HTTP; Wed, 6 Aug 2014 04:21:24 -0700 (PDT)
+X-Originating-IP: [78.110.143.226]
+Date: Wed, 6 Aug 2014 13:21:24 +0200
+Message-ID: <CALCSRYTqQujVG-YHiFcyeOhDSvzz98ojCw=kcDwmzCOiUaR+bg@mail.gmail.com>
+Subject: asdasd asd
+From: Wouter Admiraal <wad@wadmiraal.net>
+To: 728aa53e8b00100c561d@cloudmailin.net
+Content-Type: multipart/alternative; boundary=001a11c366661dc57004fff42ced
+
+--001a11c366661dc57004fff42ced
+Content-Type: text/plain; charset=UTF-8
+
+d as asdasd as dasdas
+as d
+as
+d
+asd asd asd asd asd asd asd
+*Wouter Admiraal*
+
+--001a11c366661dc57004fff42ced
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D\"ltr\">d as asdasd as dasdas<div>as d</div><div>as</div><div>d=C2=
+=A0</div><div>asd asd asd asd asd asd asd<br clear=3D\"all\"><div><div dir=3D=
+\"ltr\"><b>Wouter Admiraal</b></div></div>
+</div></div>
+
+--001a11c366661dc57004fff42ced--
+
+    [envelope] => Array
+        (
+            [to] => 728aa53e8b00100c561d@cloudmailin.net
+            [recipients] => Array
+                (
+                    [0] => 728aa53e8b00100c561d@cloudmailin.net
+                )
+
+            [from] => wad@wadmiraal.net
+            [helo_domain] => mail-lb0-f174.google.com
+            [remote_ip] => 209.85.217.174
+            [spf] => Array
+                (
+                    [result] => none
+                    [domain] => wadmiraal.net
+                )
+
+        )
+
+)
+
+
+-----------------------------------------
+
+Array
+(
+    [plain] => sdf ojisd fjkl jlsd f
+skld flkjsdlf
+skldfj skldfj ds
+
+
+*Wouter Admiraal*
+
+    [html] => <div dir=\"ltr\">sdf ojisd fjkl jlsd f<div>skld flkjsdlf </div><div>skldfj skldfj ds</div><div><br></div><div><br clear=\"all\"><div><div dir=\"ltr\"><b>Wouter Admiraal</b></div></div>
+</div></div>
+
+    [reply_plain] =>
+    [headers] => Array
+        (
+            [Received] => Array
+                (
+                    [0] => by mail-lb0-f176.google.com with SMTP id u10so1767803lbd.21 for <728aa53e8b00100c561d@cloudmailin.net>; Wed, 06 Aug 2014 04:24:22 -0700
+                    [1] => by 10.112.64.236 with HTTP; Wed, 06 Aug 2014 04:24:22 -0700
+                )
+
+            [Date] => Wed, 06 Aug 2014 13:24:22 +0200
+            [From] => Wouter Admiraal <wad@wadmiraal.net>
+            [To] => 728aa53e8b00100c561d@cloudmailin.net
+            [Message-ID] => <CALCSRYT3HGvM_uwEBDSAOjbib95VbixjjDPmDQY6XwJPjBweuQ@mail.gmail.com>
+            [Subject] => sadasdasd
+            [Mime-Version] => 1.0
+            [X-Google-DKIM-Signature] => v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net; s=20130820; h=x-gm-message-state:mime-version:date:message-id:subject:from:to :content-type; bh=1uPRxI4UbMLPpeduYh17y5peAROv4zwyc+2xkEUtKTc=; b=jh/fXiWM1tXfqU+LTTMJOtozUfhrmsSQ0WTYV68PLuzmgBXjNrwysQ82WLx7wvcp0X cwt5o3kstuK6gowEm0XiWuAlO9UqzFP6o+93/qOjQ9kGHZ7zOrgmlgdT50B7sGKdy8O0 1zVcSWeEOMy8kIbJHZnaqwFgyBELI4Y3Tq4NZtKFyowvFw86Nr6iZz7EsCOZjfsQPvrq N+TmtYJLVxAOmDVSPus9RmcysDJVefyBrlrqc4s+WoG2oBsfXQuB4oL1aCLYkEfkTLEW mmNZ53efmgNBZOmlyBvxv66Se1TJCoThV3IyQ+PPr7ZTfNzNI0uG/s1c6Ea1BbJm1N5N AwgQ==
+            [X-Gm-Message-State] => ALoCoQlYE/lIuTStiRkW1qlQeCcIwBsWunGhIz+VSUWd9eINVYPuM60FQ3YkWtdPnD93MSLEduUw
+            [X-Received] => by 10.152.36.135 with SMTP id q7mr10714203laj.42.1407324262168; Wed, 06 Aug 2014 04:24:22 -0700 (PDT)
+            [X-Originating-IP] => [78.110.143.226]
+        )
+
+    [envelope] => Array
+        (
+            [to] => 728aa53e8b00100c561d@cloudmailin.net
+            [recipients] => Array
+                (
+                    [0] => 728aa53e8b00100c561d@cloudmailin.net
+                )
+
+            [from] => wad@wadmiraal.net
+            [helo_domain] => mail-lb0-f176.google.com
+            [remote_ip] => 209.85.217.176
+            [spf] => Array
+                (
+                    [result] => none
+                    [domain] => wadmiraal.net
+                )
+
+        )
+
+)
+
+
+-----------------------------------------
+
+Array
+(
+    [plain] => Whazzzzzzzza
+
+*Wouter Admiraal*
+
+    [html] => <div dir=\"ltr\">Whazzzzzzzza<div><br clear=\"all\"><div><div dir=\"ltr\"><b>Wouter Admiraal</b></div></div>
+</div></div>
+
+    [reply_plain] =>
+    [headers] => Array
+        (
+            [Received] => Array
+                (
+                    [0] => by mail-la0-f43.google.com with SMTP id hr17so1838463lab.30 for <728aa53e8b00100c561d@cloudmailin.net>; Wed, 06 Aug 2014 04:31:15 -0700
+                    [1] => by 10.112.64.236 with HTTP; Wed, 06 Aug 2014 04:31:15 -0700
+                )
+
+            [Date] => Wed, 06 Aug 2014 13:31:15 +0200
+            [From] => Wouter Admiraal <wad@wadmiraal.net>
+            [To] => 728aa53e8b00100c561d@cloudmailin.net
+            [Message-ID] => <CALCSRYSO-jzL3POy76iEV5hysW6qYOAdFyEEr2Y+TLSAqPxTOA@mail.gmail.com>
+            [Subject] => Whazza
+            [Mime-Version] => 1.0
+            [X-Google-DKIM-Signature] => v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net; s=20130820; h=x-gm-message-state:mime-version:date:message-id:subject:from:to :content-type; bh=gUD9quMhwDuQ36PiaxYBT9oy4xuXyi3J81G0PyXGFRY=; b=PKm64VHCx6n3LBDztJoD56/4Jl75Yic+bPZE8MPElFi8ReBq5cWUwc9Pb/nbba9Rid cG4aiTKC7LFDxHrGiyDGyoFrffI5fbYf5/RmpAJtJ4KjNURXa90EZsUj7t2691eL191F psDBtWKqKtliqCJnf/rYZDHRBgGBbp0Xv+nnZlX0U13PLJJaFYe+1nsRObOU5bgYqsDt 9UhnMuoYUBtQQvKgdkFC+syRYmL/YdWRkoxUxb5s3j/vUg8nfTd7z5HVuG+iLEQPtqWz oRjxquw4YQ9zfwpmuWxYcd+RxQ416utHmaofTnIia02k/RQV4LszA9BL1uzQsU/r7RK6 uH5Q==
+            [X-Gm-Message-State] => ALoCoQmSP4xjzsvcyuxoYTHo5e6p1Kn6/YxY0w7IDntCe8iCkKVwG3CK5CmFMyecFjBMbjUQ7dKT
+            [X-Received] => by 10.112.14.199 with SMTP id r7mr10029607lbc.58.1407324675610; Wed, 06 Aug 2014 04:31:15 -0700 (PDT)
+            [X-Originating-IP] => [78.110.143.226]
+        )
+
+    [envelope] => Array
+        (
+            [to] => 728aa53e8b00100c561d@cloudmailin.net
+            [recipients] => Array
+                (
+                    [0] => 728aa53e8b00100c561d@cloudmailin.net
+                )
+
+            [from] => wad@wadmiraal.net
+            [helo_domain] => mail-la0-f43.google.com
+            [remote_ip] => 209.85.215.43
+            [spf] => Array
+                (
+                    [result] => none
+                    [domain] => wadmiraal.net
+                )
+
+        )
+
+)
+
+
+-----------------------------------------
+
+Array
+(
+    [plain] => sad fsdf asdf asd fsdf  sdfsd sd fsdf sdf
+
+*Wouter Admiraal*
+
+
+2014-08-06 13:31 GMT+02:00 Your Humble Tudu Servant <
+please-reply@tuduapp.com>:
+
+> Whazza
+>
+
+    [html] => <div dir=\"ltr\">sad fsdf asdf asd fsdf  sdfsd sd fsdf sdf </div><div class=\"gmail_extra\"><br clear=\"all\"><div><div dir=\"ltr\"><b>Wouter Admiraal</b></div></div>
+<br><br><div class=\"gmail_quote\">2014-08-06 13:31 GMT+02:00 Your Humble Tudu Servant <span dir=\"ltr\">&lt;<a href=\"mailto:please-reply@tuduapp.com\" target=\"_blank\">please-reply@tuduapp.com</a>&gt;</span>:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">
+Whazza<br>
+</blockquote></div><br></div>
+
+    [reply_plain] => sad fsdf asdf asd fsdf  sdfsd sd fsdf sdf
+
+*Wouter Admiraal*
+
+
+2014-08-06 13:31 GMT+02:00 Your Humble Tudu Servant <
+please-reply@tuduapp.com>:
+
+    [headers] => Array
+        (
+            [Received] => Array
+                (
+                    [0] => from gopher.arvixe.com (unknown [10.237.11.126]) by relay.mailchannels.net (Postfix) with ESMTPA id 5BF0A61210 for <728aa53e8b00100c561d@cloudmailin.net>; Wed, 06 Aug 2014 11:46:44 +0000
+                    [1] => from gopher.arvixe.com (gopher.arvixe.com [10.227.41.147]) (using TLSv1 with cipher DHE-RSA-AES256-SHA) by 0.0.0.0:2500 (trex/5.2.12); Wed, 06 Aug 2014 11:46:49 GMT
+                    [2] => from mail-lb0-f175.google.com ([209.85.217.175]:39168) by gopher.arvixe.com with esmtps (TLSv1:RC4-SHA:128) (Exim 4.82) (envelope-from <wad@wadmiraal.net>) id 1XEzg3-0006Eb-Aw for please-reply@tuduapp.com; Wed, 06 Aug 2014 04:46:43 -0700
+                    [3] => by mail-lb0-f175.google.com with SMTP id 10so1845989lbg.34 for <please-reply@tuduapp.com>; Wed, 06 Aug 2014 04:46:40 -0700
+                    [4] => by 10.112.64.236 with HTTP; Wed, 06 Aug 2014 04:46:40 -0700
+                )
+
+            [Date] => Wed, 06 Aug 2014 13:46:40 +0200
+            [From] => Wouter Admiraal <wad@wadmiraal.net>
+            [To] => Your Humble Tudu Servant <please-reply@tuduapp.com>
+            [Message-ID] => <CALCSRYSb6R2WZQE0Hv87OQA1jZLqBLo19L6TQh3r_c22dzC+qA@mail.gmail.com>
+            [In-Reply-To] => <E1XEzR7-00070Q-Sa@gopher.arvixe.com>
+            [References] => <CALCSRYSO-jzL3POy76iEV5hysW6qYOAdFyEEr2Y+TLSAqPxTOA@mail.gmail.com> <E1XEzR7-00070Q-Sa@gopher.arvixe.com>
+            [Subject] => Re: Whazza
+            [Mime-Version] => 1.0
+            [X-Sender-Id] => Array
+                (
+                    [0] => arvixe|x-originating-ip|[78.110.143.226]
+                    [1] => arvixe|x-originating-ip|[78.110.143.226]
+                )
+
+            [X-MC-Relay] => Neutral
+            [X-MailChannels-SenderId] => arvixe|x-originating-ip|[78.110.143.226]
+            [X-MailChannels-Auth-Id] => arvixe
+            [X-MC-Ingress-Time] => 1407325609710
+            [X-Google-DKIM-Signature] => v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net; s=20130820; h=x-gm-message-state:mime-version:in-reply-to:references:date :message-id:subject:from:to:content-type; bh=sgKicSpxJ8aleqkyCbmhZfnYa5RATmugqtUfA95h4oE=; b=Q8mo6etRQYLuz0TFoRmj1twUfm6/3/PtIdFOVRmT6W5wjrkIF98r6SJ6nd4Q6JMS6D NMPVzsWJiaz35MY5s4ia9t18N76vFJFF1+1nOu9Vs9k/h8/Af87zJXPrwx9EzJWKFBjP y3s5GOUq3o1YYV9zbT2QihYjr9EVOaN2hukI7o0HCZNHuS+5Cq/VL/6DlHxuVNcbbGks dpEnbg8CnUSBgll9jUtB58hAP5iL8MlLx2RBb/UE11bC2Usr3uCVxM8O3cwMICUKusQv MeGTq5hRraxeSaL5eAchGEn0rDKi7kl+423TFgh9a5jvbrBnGjxCg/IU7Mx8tgJmXlNK +p7g==
+            [X-Gm-Message-State] => ALoCoQnwW6xVEu6/H6FOft5jnCf5k6sV/fJcIJlekhLmLLzmLtXO6XyyPoUU5epaAWEwf/pCkcA+
+            [X-Received] => by 10.112.125.132 with SMTP id mq4mr10176716lbb.68.1407325600377; Wed, 06 Aug 2014 04:46:40 -0700 (PDT)
+            [X-Originating-IP] => [78.110.143.226]
+            [X-AuthUser] =>
+        )
+
+    [envelope] => Array
+        (
+            [to] => 728aa53e8b00100c561d@cloudmailin.net
+            [recipients] => Array
+                (
+                    [0] => 728aa53e8b00100c561d@cloudmailin.net
+                )
+
+            [from] => wad@wadmiraal.net
+            [helo_domain] => relay.mailchannels.net
+            [remote_ip] => 162.253.144.85
+            [spf] => Array
+                (
+                    [result] => none
+                    [domain] => wadmiraal.net
+                )
+
+        )
+
+)
+
+
+-----------------------------------------
+
+Array
+(
+    [plain] => test
+
+*Wouter Admiraal*
+
+    [html] => <div dir=\"ltr\">test<div><br clear=\"all\"><div><div dir=\"ltr\"><b>Wouter Admiraal</b></div></div>
+</div></div>
+
+    [reply_plain] =>
+    [headers] => Array
+        (
+            [Received] => Array
+                (
+                    [0] => by mail-la0-f43.google.com with SMTP id hr17so2543134lab.2 for <728aa53e8b00100c561d@cloudmailin.net>; Wed, 06 Aug 2014 11:06:50 -0700
+                    [1] => by 10.112.64.236 with HTTP; Mon, 04 Aug 2014 04:11:22 -0700
+                )
+
+            [Date] => Mon, 04 Aug 2014 13:11:22 +0200
+            [From] => Wouter Admiraal <wad@wadmiraal.net>
+            [To] => 728aa53e8b00100c561d@cloudmailin.net
+            [Message-ID] => <CALCSRYRX5dPSbx=PoJVPmxwfyt4DY8-E2H-Hi6Ow8gDWTuHm2Q@mail.gmail.com>
+            [Subject] => Test
+            [Mime-Version] => 1.0
+            [X-Google-DKIM-Signature] => v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net; s=20130820; h=x-gm-message-state:mime-version:date:message-id:subject:from:to :content-type; bh=MLGg/2nczvcrsVwJqhZLnkvzKD58Edu/vcfj8QUQG3c=; b=jkYgIyQKzLXjU6Ij1Kg2TyKS0jW9dIPCJpFjwBcSOxOARk++wnllVpbyf36ddLUjUn j9MuJ+UBs1be7Q+ukAEEsDOIq4A74qRxNt6TtAUlRvmXcWmM1mli5tN7JAK5jrF7RVwq lMQ/9/JId1AzElRmCKNS0otZQOR491tWFzh773jLe9IhRhgqQU07fhjC+8fTlpdkAxcy iXGUWktOAE1IxqIGdweoPg/9PCQhDrQ9p8gdLeUQJ4hm7FQYaC/1gX90FMIM1kYrE8Bm TenIwv21CxugzgqEPfQor+skE0TqzTBemR58Xg2EPkNfHA+qi97LDoi7bxoK83J9Kb6V lfwg==
+            [X-Gm-Message-State] => ALoCoQnxzXY1WZcFKIKt3ac2DXe5hTxOaQoi0VleEhsmIZ3RsNiqD/witk3o0Gv2g+Y5K9dh/eJ3
+            [X-Received] => by 10.112.14.199 with SMTP id r7mr14616611lbc.58.1407150682230; Mon, 04 Aug 2014 04:11:22 -0700 (PDT)
+            [X-Originating-IP] => [78.110.143.226]
+        )
+
+    [envelope] => Array
+        (
+            [to] => 728aa53e8b00100c561d@cloudmailin.net
+            [recipients] => Array
+                (
+                    [0] => 728aa53e8b00100c561d@cloudmailin.net
+                )
+
+            [from] => wad@wadmiraal.net
+            [helo_domain] => mail-la0-f43.google.com
+            [remote_ip] => 209.85.215.43
+            [spf] => Array
+                (
+                    [result] => none
+                    [domain] => wadmiraal.net
+                )
+
+        )
+
+)
+
+
+-----------------------------------------
+
+Array
+(
+    [plain] => asasdasdasdasdasd
+*Wouter Admiraal*
+
+    [html] => <div dir=\"ltr\">asasdasdasdasdasd<br clear=\"all\"><div><div dir=\"ltr\"><b>Wouter Admiraal</b></div></div>
+</div>
+
+    [reply_plain] =>
+    [headers] => Array
+        (
+            [Received] => Array
+                (
+                    [0] => by mail-la0-f42.google.com with SMTP id mc6so7384524lab.1 for <728aa53e8b00100c561d@cloudmailin.net>; Tue, 02 Sep 2014 01:50:54 -0700
+                    [1] => by 10.112.64.236 with HTTP; Tue, 02 Sep 2014 01:50:54 -0700
+                )
+
+            [Date] => Tue, 02 Sep 2014 10:50:54 +0200
+            [From] => Wouter Admiraal <wad@wadmiraal.net>
+            [To] => 728aa53e8b00100c561d@cloudmailin.net
+            [Cc] => Wouter Admiraal <wad@wadmiraal.net>, wouter.admiraal@educa.ch
+            [Message-ID] => <CALCSRYQHh-D0VtcGgbedkv1AqEQuRBrqmFURjg9nk08dkbU5vg@mail.gmail.com>
+            [Subject] => Test
+            [Mime-Version] => 1.0
+            [X-Google-DKIM-Signature] => v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net; s=20130820; h=x-gm-message-state:mime-version:date:message-id:subject:from:to:cc :content-type; bh=B62g58WdT3bFZMhlBJTSml2n1Zbyb2GEHYezh7x8jPs=; b=d3Hr03D/+sN0tOsDWnHSK786XnHuk/fY0Gxmcp5+tJYP6lj7kOeb3oDfZu6lIRbpSV dz9c3KBaOJBGedamfmRKF7wQ219nf4XeE0JRUZzgJCqXerE33Odlv4JfCyvGvRAbpC0I WXgfSlKpTBBG6It92KWfmGvlcdPA+cEhLQEzcAo9vR44joPAT5pFUVT/ewpmj7hywDBC xII2j5nevvAlfNQIK/DhLBYfiqiEqMpIwnzy0YQhbBO4xb4xBXBGBPuXrFbQ/JNKuWq9 x5yIcw864fDNNAMCs96bR4eyv/0cNlUXDtj0a/c97c44iLFqtfEKzQ1ewpFlsbO02tn7 bPkw==
+            [X-Gm-Message-State] => ALoCoQnGVWUuY9NKcdWosPp+qijAtDgUt/V/6Q6pij2JQIuqcd2FCF7KSeSrRnKRy24Rs2szXB4b
+            [X-Received] => by 10.152.164.70 with SMTP id yo6mr33646784lab.2.1409647854644; Tue, 02 Sep 2014 01:50:54 -0700 (PDT)
+            [X-Originating-IP] => [62.2.106.26]
+        )
+
+    [envelope] => Array
+        (
+            [to] => 728aa53e8b00100c561d@cloudmailin.net
+            [recipients] => Array
+                (
+                    [0] => 728aa53e8b00100c561d@cloudmailin.net
+                )
+
+            [from] => wad@wadmiraal.net
+            [helo_domain] => mail-la0-f42.google.com
+            [remote_ip] => 209.85.215.42
+            [spf] => Array
+                (
+                    [result] => none
+                    [domain] => wadmiraal.net
+                )
+
+        )
+
+)
+
+
+-----------------------------------------
+

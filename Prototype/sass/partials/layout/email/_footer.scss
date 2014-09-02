@@ -1,0 +1,40 @@
+/**
+ * @file
+ * Defines the footer styles.
+ */
+
+.footer {
+  @include email-container;
+  margin-top: 2em;
+}
+
+.footer__instructions {
+  font-size: 0.6em;
+
+  td {
+    padding: 10px;
+  }
+}
+
+.footer__instructions__list {
+  overflow: hidden;
+}
+
+.footer__instructions__list__instruction-command {
+  display: block;
+  float: left;
+  width: 25%;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.footer__instructions__list__instruction-help {
+  display: block;
+  float: left;
+  width: 70%;
+  margin-left: 10px;
+
+  p:first-child {
+    margin-top: 0;
+  }
+}

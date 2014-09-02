@@ -1,0 +1,8 @@
+/**
+ * @file
+ * Defines the content styles.
+ */
+
+.content {
+  @include email-container;
+}

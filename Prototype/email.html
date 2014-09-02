@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>TaskBox Email View</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="css/styles.css" rel="stylesheet" />
+</head>
+<body>
+  <table class="header">
+    <tr class="header__title">
+      <td>
+        <h2>My todo list</h2>
+        <a href="" class="header__title__open-in-browser-link">Open in browser</a>
+      </td>
+    </tr>
+
+    <tr class="header__intro-text">
+      <td>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed porttitor vestibulum tincidunt. Vestibulum vitae tristique turpis. Nam ultricies, quam eu iaculis posuere, dolor est imperdiet odio, ac venenatis odio eros in nunc.</p>
+
+        <p>Quisque a ante quam. Morbi eros massa, molestie non sollicitudin sed, dignissim in quam. Morbi elit dolor, eleifend ut placerat quis, convallis sed magna. Phasellus ultrices, quam vitae mollis lacinia, elit sem sodales odio, eget eleifend nisl quam eget neque. Donec turpis tellus, varius sagittis tincidunt eget, eleifend a neque. Aliquam vel semper diam, ut ornare nibh.</p>
+
+        <p>Donec pellentesque iaculis tortor quis placerat. Donec non euismod turpis, vel fringilla nunc. Morbi volutpat sed arcu ut elementum. Aliquam ullamcorper purus viverra, molestie urna at, pharetra ligula. Pellentesque iaculis arcu erat, nec condimentum ipsum condimentum sed.</p>
+      </td>
+    </tr>
+  </table>
+
+  <table class="content">
+    <tr>
+      <td>
+        <h6>Open tasks</h6>
+
+        <ul class="task-list">
+          <li class="task-list__task">
+            <span class="task-list__task__identifier">1</span>
+            <span class="task-list__task__description">Lorem ipsum dolor</span>
+          </li>
+          <li class="task-list__task">
+            <span class="task-list__task__identifier">4</span>
+            <span class="task-list__task__description">asd jkkjasdhkj asdasd dasd as</span>
+          </li>
+          <li class="task-list__task">
+            <span class="task-list__task__identifier">6</span>
+            <span class="task-list__task__description">klaj dkljaskldkla jsdlj askld alsdjl askdj asldkj laskjd lasldkj alksd asjdlj sdf kfjk sdfjk sdkfjh skdfh kjsdfh kjhsd fuisd fhjksh dfjksd fkjhs dfkjsd fkjsdhf sdkjf </span>
+          </li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <h6>Finished tasks</h6>
+
+        <ul class="task-list task-list--done">
+          <li class="task-list__task">
+            <span class="task-list__task__identifier">2</span>
+            <span class="task-list__task__description">Lorem ipsum dolor</span>
+            <span class="task-list__task__accomplished-by">(done by wad@wadmiraal.net)</span>
+          </li>
+          <li class="task-list__task">
+            <span class="task-list__task__identifier">3</span>
+            <span class="task-list__task__description">asd jkkjasdhkj asdasd dasd as</span>
+            <span class="task-list__task__accomplished-by">(done by wad@wadmiraal.net)</span>
+          </li>
+          <li class="task-list__task">
+            <span class="task-list__task__identifier">5</span>
+            <span class="task-list__task__description">klaj dkljaskldkla klaj dkljaskldkla jsdlj askld alsdjl askdj asldkj laskjd lasldkj alksd asjdlj sdf kfjk sdfjk sdkfjh skdfh kjsdfh kjhsd fuisd fhjksh dfjksd fkjhs dfkjsd fkjsdhf sdkjf jsdlj</span>
+            <span class="task-list__task__accomplished-by">(done by wad@wadmiraal.net)</span>
+          </li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <h6>Comments</h6>
+
+        <ul class="comments">
+          <li class="comments__comment">
+            <span class="comments__comment__user">wad@wadmiraal.net (5th of June 2014, 12:05)</span>
+            <span class="comments__comment__body">klaj dkljaskldkla klaj dkljaskldkla jsdlj askld alsdjl askdj asldkj laskjd lasldkj alksd asjdlj sdf kfjk sdfjk sdkfjh skdfh kjsdfh kjhsd fuisd fhjksh dfjksd fkjhs dfkjsd fkjsdhf sdkjf jsdlj</span>
+          </li>
+          <li class="comments__comment comments__comment--view-more">... (6 more - <a href="">view in browser to see them all</a>)</li>
+          <li class="comments__comment">
+            <span class="comments__comment__user">wad@wadmiraal.net (6th of July 2014, 12:05)</span>
+            <span class="comments__comment__body">Lorem ipsum dolor</span>
+          </li>
+          <li class="comments__comment">
+            <span class="comments__comment__user">wad@wadmiraal.net (5th of August 2014, 14:05)</span>
+            <span class="comments__comment__body">klaj dkljaskldkla klaj dkljaskldkla jsdlj askld alsdjl askdj asldkj laskjd lasldkj alksd asjdlj sdf kfjk sdfjk sdkfjh skdfh kjsdfh kjhsd fuisd fhjksh dfjksd fkjhs dfkjsd fkjsdhf sdkjf jsdlj</span>
+          </li>
+          <li class="comments__comment">
+            <span class="comments__comment__user">wad@wadmiraal.net (5th of August 2014, 16:30)</span>
+            <span class="comments__comment__body">Lorem ipsum dolor</span>
+          </li>
+        </ul>
+      </td>
+    </tr>
+  </table>
+
+  <table class="footer">
+    <tr class="footer__instructions">
+      <td>
+        <p><strong>Reply to this email with:</strong></p>
+
+        <dl class="footer__instructions__list">
+          <dt class="footer__instructions__list__instruction-command">Done [number of the task]</dt>
+          <dd class="footer__instructions__list__instruction-help">
+            <p>Mark a task as finished.</p>
+            <p>For example, to mark task 3 as finished, reply to this email with</p>
+            <p><code>Done 3</code></p>
+          </dd>
+
+          <dt class="footer__instructions__list__instruction-command">Add: [task description]</dt>
+          <dd class="footer__instructions__list__instruction-help">
+            <p>Adds a new task to the list.</p>
+            <p>For example, to add a task "Buy eggs at Wallmart", reply with</p>
+            <p><code>Add: Buy eggs at Wallmart</code></p>
+          </dd>
+
+          <dt class="footer__instructions__list__instruction-command">Delete [number of the task]</dt>
+          <dd class="footer__instructions__list__instruction-help">
+            <p>Removes a task completely.</p>
+            <p>For example, to delete task 5 completely, reply to this email with</p>
+            <p><code>Delete 5</code></p>
+          </dd>
+
+          <dt class="footer__instructions__list__instruction-command">Reset [number of the task]</dt>
+          <dd class="footer__instructions__list__instruction-help">
+            <p>Marks a task as "not done".</p>
+            <p>For example, to reset the previously completed task 3, reply to this email with</p>
+            <p><code>Reset 3</code></p>
+          </dd>
+
+          <dt class="footer__instructions__list__instruction-command">Anything else</dt>
+          <dd class="footer__instructions__list__instruction-help">
+            <p>Replying with any text that does not fall in any of the above categories will simply add a new comment to the list.</p>
+          </dd>
+        </dl>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

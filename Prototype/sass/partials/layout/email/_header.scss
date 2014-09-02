@@ -1,0 +1,33 @@
+/**
+ * @file
+ * Defines the email header styles.
+ */
+
+.header {
+  @include email-container;
+}
+
+.header__title {
+  color: $blue;
+
+  td {
+    border-bottom: 3px solid $blue;
+    padding: 5px;
+  }
+
+  h2 {
+    float: left;
+    font-size: 1.2em;
+    margin: 0;
+  }
+}
+
+.header__title__open-in-browser-link {
+  float: right;
+  color: inherit;
+  font-size: .8em;
+}
+
+.header__intro-text {
+  line-height: 1.5;
+}

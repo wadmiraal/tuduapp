@@ -1,0 +1,51 @@
+/**
+ * @file
+ * Defines styles for the task list.
+ */
+
+.task-list {
+  list-style: none;
+  padding: 0;
+}
+
+.task-list__task {
+  overflow: hidden;
+  margin-bottom: 1em;
+}
+
+.task-list__task__identifier {
+  float: left;
+  display: block;
+  padding: 2px;
+  height: 1em;
+  min-width: 1em;
+  text-align: center;
+  color: $dark-blue;
+  border: 1px solid $dark-blue;
+  @include border-radius(5px);
+}
+
+.task-list__task__description {
+  padding: 2px 0 0 2em;
+  display: block;
+}
+
+.task-list--done {
+  font-size: .75em;
+  color: $light-blue;
+
+  .task-list__task__description {
+    text-decoration: line-through;
+  }
+
+  .task-list__task__identifier {
+    color: inherit;
+    border-color: $light-blue;
+  }
+
+  .task-list__task__accomplished-by {
+    clear: both;
+    font-style: italic;
+    float: right;
+  }
+}

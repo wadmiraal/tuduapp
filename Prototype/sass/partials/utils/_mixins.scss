@@ -1,0 +1,14 @@
+/**
+ * @file
+ * Defines a list of mixins.
+ */
+
+@mixin email-container {
+  max-width: 600px;
+  margin: 0 auto;
+  border-spacing: 0;
+
+  td {
+    padding: 0;
+  }
+}
