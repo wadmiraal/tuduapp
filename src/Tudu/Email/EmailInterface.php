@@ -74,4 +74,13 @@ interface EmailInterface
      */
     public function getMessageID();
 
+    /**
+     * Get the email CC recipients, if any.
+     *
+     * @return array
+     *   The list of recipients. Each item has 2 keys:
+     *   - address: The recipient email address
+     *   - name: The recipient name, if any.
+     */
+    public function getRecipients();
 }
