@@ -98,10 +98,6 @@ class TodoTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('title', $todo->getTitle(), 'Test set/get title.');
         $todo->setOwner('owner@email.com');
         $this->assertEquals('owner@email.com', $todo->getOwner(), 'Test set/get owner.');
-        $todo->setLastUpdated(date('Y-m-d H:i:s'));
-        $this->assertEquals(date('Y-m-d H:i:s'), $todo->getLastUpdated(), 'Test set/get last updated.');
-        $todo->setCreated(date('Y-m-d H:i:s'));
-        $this->assertEquals(date('Y-m-d H:i:s'), $todo->getCreated(), 'Test set/get created.');
         $todo->setNotifyParticipants(1);
         $this->assertEquals(1, $todo->getNotifyParticipants(), 'Test set/get notify.');
     }
@@ -144,7 +140,20 @@ class TodoTest extends \PHPUnit_Framework_TestCase
      */
     public function testDB()
     {
+        $todo = new Todo($this->connection);
+        $todo->setTitle('title');
+        $todo->setOwner('owner@email.com');
+        $todo->save();
 
+        $time = date('Y-m-d H:i:s');
+        $this->assertNotNull($todo->getID(), 'Saving assigns an ID.');
+        $this->assertEquals($time, $todo->getCreated(), 'Saving assigns a created date if none was specified.');
+        $this->assertEquals($time, $todo->getLastUpdated(), 'Saving assigns a last updated date if none was specified.');
+
+        $todo2 = new Todo($this->connection);
+        $todo2->load($todo->getID());
+
+        $this->assertEquals($todo, $todo2, 'Loading loads the same attributes.');
     }
 
     /**
