@@ -106,17 +106,6 @@ class Todo
     }
 
     /**
-     * Set the creation date time for the list.
-     *
-     * @param string $created
-     *   The creation date and time for the list.
-     */
-    public function setCreated($created)
-    {
-        $this->created = $created;
-    }
-
-    /**
      * Get the creation date time for the list.
      *
      * @return string
@@ -125,17 +114,6 @@ class Todo
     public function getCreated()
     {
         return $this->created;
-    }
-
-    /**
-     * Set the last updated date time for the list.
-     *
-     * @param string $lastUpdated
-     *   The last updated date and time for the list.
-     */
-    public function setLastUpdated($lastUpdated)
-    {
-        $this->lastUpdated = $lastUpdated;
     }
 
     /**
@@ -291,6 +269,8 @@ class Todo
     public function save()
     {
         if (!empty($this->id)) {
+            $this->lastUpdated = date('Y-m-d H:i:s');
+
             $stmt = $this->connection->prepare("
                 UPDATE  todos
                    SET  title = :title, owner = :owner, last_updated = :last_updated, notify_participants = :notify_participants
