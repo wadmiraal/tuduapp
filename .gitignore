@@ -1,4 +1,6 @@
 vendor/
+build/
+coverage-report/
 web/bower_components/
 app/config.php
 Prototype/.sass-cache/
