@@ -196,10 +196,14 @@ class Todo
      */
     public function addParticipant($email, $name, $lastMessageId = null)
     {
-        foreach ($this->participants as $participant) {
-            if ($participant->getEmail() === $email) {
-                return;
+        if (!empty($this->participants)) {
+            foreach ($this->participants as $participant) {
+                if ($participant->getEmail() === $email) {
+                    return;
+                }
             }
+        } else {
+            $this->participants = array();
         }
 
         $participant = new Participant($this->connection);
