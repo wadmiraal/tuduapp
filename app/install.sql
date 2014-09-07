@@ -20,6 +20,9 @@ CREATE TABLE IF NOT EXISTS `tasks` (
   `done` tinyint(1) NOT NULL,
   `meta_due` datetime DEFAULT NULL,
   `meta_assigned_to` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  UNIQUE KEY `num_2` (`num`,`todo_id`),
+  UNIQUE KEY `num_3` (`num`,`todo_id`),
+  KEY `num` (`num`,`todo_id`),
   KEY `todo_id` (`todo_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
