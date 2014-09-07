@@ -1,5 +1,6 @@
 vendor/
 build/
+.tmp/
 coverage-report/
 web/bower_components/
 Prototype/.sass-cache/
