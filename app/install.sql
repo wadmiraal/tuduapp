@@ -3,7 +3,7 @@ SET time_zone = "+00:00";
 
 
 CREATE TABLE IF NOT EXISTS `todos` (
-  `id` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `id` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `owner` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `created` datetime NOT NULL,
@@ -29,8 +29,8 @@ ALTER TABLE `tasks`
 
 
 CREATE TABLE IF NOT EXISTS `participants` (
-  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `todo_id` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `last_message_id` text COLLATE utf8_unicode_ci NOT NULL,
   UNIQUE KEY `email_2` (`email`,`todo_id`),
