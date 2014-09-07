@@ -64,15 +64,32 @@ class Main
                     return new Response("Incorrect 'To' address. Received: {$to}", 400);
                 }
 
+                // Update the sender message ID.
+                $todo->addParticipant($email->getFromAddress(), $email->getFromName(), $email->getMessageID());
+
+                // Extract the action and parameter.
                 list($action, $parameter) = Parser::extractAction($email->getBody());
 
+                switch ($action) {
+                    case Parser::ADD:
+                        // @todo
+                        break;
 
+                    case Parser::DELETE:
+                        // @todo
+                        break;
 
-                // @todo:
-                // - update the list as needed (if needed)
-                // - load the email sender, and update her participant entry
-                //   (because of the message ID)
-                // - notify all participants
+                    case Parser::RESET:
+                        // @todo
+                        break;
+
+                    default:                        
+                    case Parser::COMMENT:
+                        // @todo
+                        break;
+                }
+
+                Notifier::notify($todo);
                 break;
 
             default:
