@@ -70,6 +70,7 @@ class Todo
     public function __construct(\Doctrine\DBAL\Connection $connection)
     {
         $this->connection = $connection;
+        $this->participants = array();
     }
 
     /**
@@ -238,10 +239,11 @@ class Todo
         $data = $stmt->fetch(\PDO::FETCH_ASSOC);
 
         $this->id = $id;
+        $this->title = $data['title'];
         $this->owner = $data['owner'];
         $this->created = $data['created'];
         $this->lastUpdated = $data['last_updated'];
-        $this->notifyParticipants = $data['notify_participants'];
+        $this->notifyParticipants = (int) $data['notify_participants'];
 
         // Load all participants.
         $this->participants = array();
