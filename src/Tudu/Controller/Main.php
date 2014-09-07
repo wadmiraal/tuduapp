@@ -26,6 +26,8 @@ class Main
      */
     public function inboxAction(Application $app, Request $request)
     {
+        $conf = $app['conf'];
+
         $email = new CloudMailinEmail($request);
 
         switch ($email->getTo()) {

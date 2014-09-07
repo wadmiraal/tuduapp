@@ -14,3 +14,8 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
 $app['todo_db_service'] = function($app) {
     return new Todo($app['db']);
 };
+
+$app['conf'] = function() {
+    global $conf;
+    return $conf;
+};
