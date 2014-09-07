@@ -243,7 +243,7 @@ class Todo
         $this->owner = $data['owner'];
         $this->created = $data['created'];
         $this->lastUpdated = $data['last_updated'];
-        $this->notifyParticipants = (int) $data['notify_participants'];
+        $this->notifyParticipants = (bool) $data['notify_participants'];
 
         // Load all participants.
         $this->participants = array();
