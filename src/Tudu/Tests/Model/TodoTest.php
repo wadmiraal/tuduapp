@@ -27,11 +27,55 @@ class TodoTest extends \PHPUnit_Framework_TestCase
     /**
      * Set up.
      *
-     * Generate a random, unique name for the Sqlite database file.
+     * Generate a random, unique name for the Sqlite database file. Create the
+     * database itself.
      */
     protected function setUp()
     {
-        $this->dbFile = __DIR__ . '.tmp/' . uniqid() . 'db';
+        $this->dbFile = __DIR__ . '/.tmp/' . uniqid() . '.db';
+
+        if (!file_exists(__DIR__ . '/.tmp')) {
+            mkdir(__DIR__ . '/.tmp');
+        }
+
+        $this->connection = $this->getDBDriver();
+
+        $schema = new \Doctrine\DBAL\Schema\Schema();
+
+        // We don't use actual, correct types, but some that approach the
+        // final ones. The reason is Sqlite has some limitations when using
+        // Doctrine DBAL. We don't care much about performance anyway in our
+        // tests - the queries must just work.
+        $todosTable = $schema->createTable('todos');
+        $todosTable->addColumn('id', 'string', array('length' => 100));
+        $todosTable->addColumn('title', 'string', array('length' => 100));
+        $todosTable->addColumn('owner', 'string', array('length' => 100));
+        $todosTable->addColumn('created', 'string', array('length' => 40));
+        $todosTable->addColumn('last_updated', 'string', array('length' => 40));
+        $todosTable->addColumn('notify_participants', 'integer');
+        $todosTable->setPrimaryKey(array('id'));
+
+        $tasksTable = $schema->createTable('tasks');
+        $tasksTable->addColumn('todo_id', 'string', array('length' => 100));
+        $tasksTable->addColumn('num', 'integer');
+        $tasksTable->addColumn('task', 'text');
+        $tasksTable->addColumn('done', 'integer');
+        $tasksTable->addColumn('meta_due', 'string', array('length' => 100));
+        $tasksTable->addColumn('meta_assigned_to', 'string', array('length' => 255));
+
+        $participantsTable = $schema->createTable('participants');
+        $participantsTable->addColumn('todo_id', 'string', array('length' => 100));
+        $participantsTable->addColumn('email', 'string', array('length' => 100));
+        $participantsTable->addColumn('name', 'string', array('length' => 100));
+        $participantsTable->addColumn('last_message_id', 'string', array('length' => 100));
+
+        $platform = $this->connection->getDatabasePlatform();
+        $queries = $schema->toSql($platform);
+
+        foreach ($queries as $query) {
+            $stmt = $this->connection->prepare($query);
+            $stmt->execute();
+        }
     }
 
     /**
@@ -96,9 +140,9 @@ class TodoTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test loading data from the database.
+     * Test persisting data to the database.
      */
-    public function testLoading()
+    public function testDB()
     {
 
     }
