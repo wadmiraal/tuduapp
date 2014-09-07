@@ -13,7 +13,6 @@ use Tudu\Model\Participant;
 
 class TodoTest extends AbstractModelTestClass
 {
-
     /**
      * Test the setters and getters.
      */
