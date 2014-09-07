@@ -73,6 +73,17 @@ class Todo
     }
 
     /**
+     * Get the ID of the list.
+     *
+     * @return string
+     *   The ID of the list.
+     */
+    public function getID()
+    {
+        return $this->id;
+    }
+
+    /**
      * Set the owner email address for the list.
      *
      * @param string $owner
@@ -300,8 +311,10 @@ class Todo
             $stmt->bindValue('created', $this->created);
 
             // Add the list ID to all participants.
-            foreach ($this->participants as $participant) {
-                $participant->setTodoId($this->id);
+            if (!empty($this->participants)) {
+                foreach ($this->participants as $participant) {
+                    $participant->setTodoId($this->id);
+                }
             }
         }
 
@@ -316,8 +329,10 @@ class Todo
         $stmt->execute();
 
         // Save all participants.
-        foreach ($this->participants as $participant) {
-            $participant->save();
+        if (!empty($this->participants)) {
+            foreach ($this->participants as $participant) {
+                $participant->save();
+            }
         }
     }
 }
