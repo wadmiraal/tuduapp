@@ -140,19 +140,22 @@ class TodoTest extends \PHPUnit_Framework_TestCase
      */
     public function testDB()
     {
+        // Test saving.
         $todo = new Todo($this->connection);
         $todo->setTitle('title');
         $todo->setOwner('owner@email.com');
+        $todo->addParticipant('email@email.com', 'John Doe', 'asd');
         $todo->save();
 
+        // Check save went as planned.
         $time = date('Y-m-d H:i:s');
         $this->assertNotNull($todo->getID(), 'Saving assigns an ID.');
         $this->assertEquals($time, $todo->getCreated(), 'Saving assigns a created date if none was specified.');
         $this->assertEquals($time, $todo->getLastUpdated(), 'Saving assigns a last updated date if none was specified.');
 
+        // Test loading.
         $todo2 = new Todo($this->connection);
         $todo2->load($todo->getID());
-
         $this->assertEquals($todo, $todo2, 'Loading loads the same attributes.');
     }
 
