@@ -190,7 +190,7 @@ class Participant
         } else {
             $stmt = $this->connection->prepare("
                 INSERT INTO  participants
-                     VALUES  (:email, :todo_id, :name, :last_message_id)
+                     VALUES  (:todo_id, :email, :name, :last_message_id)
             ");
         }
 
