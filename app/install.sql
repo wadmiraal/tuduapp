@@ -5,6 +5,7 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `todos` (
   `id` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `description` text COLLATE utf8_unicode_ci NOT NULL,
   `owner` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `created` datetime NOT NULL,
   `last_updated` datetime DEFAULT NULL,
