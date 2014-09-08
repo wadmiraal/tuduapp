@@ -36,5 +36,8 @@ $app = new Silex\Application();
 require_once __DIR__ . '/../../../app/app.php';
 require_once __DIR__ . '/../../../app/routes.php';
 
+// Enable debugging.
+$app['debug'] = true;
+
 // Return the application, ready for booting.
 return $app;
