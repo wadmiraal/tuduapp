@@ -23,7 +23,7 @@ class AbstractModelTestClass extends \PHPUnit_Framework_TestCase
      */
     protected $dbFile;
 
-        /**
+    /**
      * Set up.
      *
      * Generate a random, unique name for the Sqlite database file. Create the
