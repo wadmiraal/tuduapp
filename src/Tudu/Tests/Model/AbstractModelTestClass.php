@@ -31,10 +31,10 @@ class AbstractModelTestClass extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->dbFile = __DIR__ . '/.tmp/' . uniqid() . '.db';
+        $this->dbFile = __DIR__ . '/../../../../.tmp/' . uniqid() . '.db';
 
-        if (!file_exists(__DIR__ . '/.tmp')) {
-            mkdir(__DIR__ . '/.tmp');
+        if (!file_exists(__DIR__ . '/../../../../.tmp')) {
+            mkdir(__DIR__ . '/../../../../.tmp');
         }
 
         $this->connection = $this->getDBDriver();
