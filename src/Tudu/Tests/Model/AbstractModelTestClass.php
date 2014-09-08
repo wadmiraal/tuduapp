@@ -48,6 +48,7 @@ class AbstractModelTestClass extends \PHPUnit_Framework_TestCase
         $todosTable = $schema->createTable('todos');
         $todosTable->addColumn('id', 'string', array('length' => 100));
         $todosTable->addColumn('title', 'string', array('length' => 100));
+        $todosTable->addColumn('description', 'text');
         $todosTable->addColumn('owner', 'string', array('length' => 100));
         $todosTable->addColumn('created', 'string', array('length' => 40));
         $todosTable->addColumn('last_updated', 'string', array('length' => 40));

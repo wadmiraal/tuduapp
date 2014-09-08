@@ -10,6 +10,7 @@ namespace Tudu\Tests\Model;
 use Tudu\Tests\Model\AbstractModelTestClass;
 use Tudu\Model\Todo;
 use Tudu\Model\Participant;
+use Tudu\Model\Task;
 
 class TodoTest extends AbstractModelTestClass
 {
@@ -21,6 +22,8 @@ class TodoTest extends AbstractModelTestClass
         $todo = new Todo($this->getDBDriver());
         $todo->setTitle('title');
         $this->assertEquals('title', $todo->getTitle(), 'Test set/get title.');
+        $todo->setDescription('Description');
+        $this->assertEquals('Description', $todo->getDescription(), 'Test set/get description.');
         $todo->setOwner('owner@email.com');
         $this->assertEquals('owner@email.com', $todo->getOwner(), 'Test set/get owner.');
         $todo->setNotifyParticipants(1);
@@ -61,6 +64,32 @@ class TodoTest extends AbstractModelTestClass
     }
 
     /**
+     * Test managing tasks.
+     */
+    public function testManagingTasks()
+    {
+        $todo = new Todo($this->getDBDriver());
+        $task = new Task($this->getDBDriver());
+        $task->setTask('Do something');
+
+        $todo->addTask('Do something');
+        $this->assertEquals(array(
+            $task,
+        ), $todo->getTasks(), 'Test adding a new task.');
+
+        $task2 = new Task($this->getDBDriver());
+        $task2->setTask('Do something else');
+        $task2->setMetaDue(date('Y-m-d H:00:00'));
+        $task2->setMetaAssignedTo('Jim');
+
+        $todo->addTask('Do something else', date('Y-m-d H:00:00'), 'Jim');
+        $this->assertEquals(array(
+            $task,
+            $task2,
+        ), $todo->getTasks(), 'Test adding another task.');
+    }
+
+    /**
      * Test persisting data to the database.
      */
     public function testDB()
@@ -70,6 +99,7 @@ class TodoTest extends AbstractModelTestClass
         $todo->setTitle('title');
         $todo->setOwner('owner@email.com');
         $todo->addParticipant('email@email.com', 'John Doe', 'asd');
+        $todo->addTask('Do something', 'Tomorrow', 'Jim');
         $todo->save();
 
         // Check save went as planned.
@@ -82,5 +112,19 @@ class TodoTest extends AbstractModelTestClass
         $todo2 = new Todo($this->connection);
         $todo2->load($todo->getID());
         $this->assertEquals($todo, $todo2, 'Loading loads the same attributes.');
+
+        $todo->addTask('Do something else');
+        // Save to assign a number to the task.
+        $todo->save();
+        $todo->setTaskState(2, true);
+        // Save again to persist the state.
+        $todo->save();
+
+        // Load again.
+        $todo2->load($todo->getID());
+
+        // Check.
+        $this->assertEquals(false, $todo2->getTask(1)->getDone(), 'Test setting a task done state.');
+        $this->assertEquals(true, $todo2->getTask(2)->getDone(), 'Test setting a task done state.');
     }
 }

@@ -210,7 +210,7 @@ class Task
         $this->task = $row['task'];
         $this->done = (bool) $row['done'];
         $this->metaDue = $row['meta_due'];
-        $this->metaDueAssignedTo = $row['meta_assigned_to'];
+        $this->metaAssignedTo = $row['meta_assigned_to'];
     }
 
     /**
@@ -218,16 +218,7 @@ class Task
      */
     public function save()
     {
-        // To avoid duplicates, we check if the task already existed.
-        $stmt = $this->connection->prepare("
-            SELECT  *
-              FROM  tasks
-             WHERE  num = :num AND todo_id = :todo_id
-        ");
-        $stmt->bindValue('todo_id', $this->todoID);
-        $stmt->bindValue('num', $this->num);
-        $stmt->execute();
-        $prev_data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $new = false;
 
         // Make sure we have some meta data.
         if (empty($this->metaDue)) {
@@ -237,8 +228,9 @@ class Task
             $this->metaAssignedTo = '';
         }
 
-        // Make sure we have a number.
-        if (empty($this->num)) {
+        // Make sure we have a number. If we don't, this is a new task.
+        if (!isset($this->num)) {
+            $new = true;
             $stmt = $this->connection->prepare("
                 SELECT  num
                   FROM  tasks
@@ -249,11 +241,16 @@ class Task
             $stmt->bindValue('todo_id', $this->todoID);
             $stmt->execute();
             $highest_num = $stmt->fetch(\PDO::FETCH_ASSOC);
-            $this->num = (int) $highest_num['num'] + 1;
+            $this->num = !empty($highest_num['num']) ? (int) $highest_num['num'] + 1 : 0;
+        }
+
+        // Make sure we have a "done" flag.
+        if (!isset($this->done)) {
+            $this->done = false;
         }
 
         // If we already had an entry, we update. Else, we insert.
-        if (!empty($prev_data['todo_id'])) {
+        if (!$new) {
             $stmt = $this->connection->prepare("
                 UPDATE  tasks
                    SET  task = :task, done = :done, meta_due = :meta_due, meta_assigned_to = :meta_assigned_to
@@ -267,9 +264,9 @@ class Task
         }
 
         $stmt->bindValue('todo_id', $this->todoID);
-        $stmt->bindValue('num', $this->num);
+        $stmt->bindValue('num', (int) $this->num);
         $stmt->bindValue('task', $this->task);
-        $stmt->bindValue('done', $this->done);
+        $stmt->bindValue('done', (int) $this->done);
         $stmt->bindValue('meta_due', $this->metaDue);
         $stmt->bindValue('meta_assigned_to', $this->metaAssignedTo);
 

@@ -50,6 +50,12 @@ class Todo
     protected $title;
 
     /**
+     * @var string $description
+     *   The description text of the list.
+     */
+    protected $description;
+
+    /**
      * @var bool $notifyParticipants
      *   A flag telling whether to notify participants of any changes.
      */
@@ -62,6 +68,12 @@ class Todo
     protected $participants;
 
     /**
+     * @var array $tasks
+     *   A list of Tudu\Model\Task objects.
+     */
+    protected $tasks;
+
+    /**
      * Constructor.
      *
      * @param \Doctrine\DBAL\Connection $connection
@@ -71,6 +83,7 @@ class Todo
     {
         $this->connection = $connection;
         $this->participants = array();
+        $this->tasks = array();
     }
 
     /**
@@ -151,6 +164,26 @@ class Todo
     }
 
     /**
+     * Set the description for the list.
+     *
+     * @param string $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * Get the description for the list.
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
      * Set a flag whether to notify participants of the list.
      *
      * @param bool $notifyParticipants
@@ -158,7 +191,7 @@ class Todo
      */
     public function setNotifyParticipants($notifyParticipants)
     {
-        $this->notifyParticipants = $notifyParticipants;
+        $this->notifyParticipants = (bool) $notifyParticipants;
     }
 
     /**
@@ -181,10 +214,10 @@ class Todo
      *   The email of the participant.
      * @param string $name
      *   The name of the participant.
-     * @param string $lastMessageId = null
+     * @param string $lastMessageID = null
      *   An optional last message ID. Defaults to null.
      */
-    public function addParticipant($email, $name, $lastMessageId = null)
+    public function addParticipant($email, $name, $lastMessageID = null)
     {
         if (!empty($this->participants)) {
             foreach ($this->participants as $participant) {
@@ -205,8 +238,8 @@ class Todo
         $participant->setEmail($email);
         $participant->setName($name);
 
-        if ($lastMessageId) {
-            $participant->setLastMessageID($lastMessageId);
+        if ($lastMessageID) {
+            $participant->setLastMessageID($lastMessageID);
         }
 
         $this->participants[] = $participant;
@@ -220,6 +253,86 @@ class Todo
      */
     public function getParticipants() {
         return $this->participants;
+    }
+
+    /**
+     * Add a task to the list.
+     *
+     * @param string $description
+     *   The description of the task.
+     * @param string $metaDue = null
+     *   An optional due date of the task, if any. Defaults to null.
+     * @param string $metaAssignedTo = null
+     *   An optional name for the assigned person. Defaults to null.
+     */
+    public function addTask($description, $metaDue = null, $metaAssignedTo = null)
+    {
+        $task = new Task($this->connection);
+
+        if (!empty($this->id)) {
+            $task->setTodoID($this->id);
+        }
+
+        $task->setTask($description);
+        
+        if ($metaDue) {
+            $task->setMetaDue($metaDue);
+        }
+
+        if ($metaAssignedTo) {
+            $task->setMetaAssignedTo($metaAssignedTo);
+        }
+
+        $this->tasks[] = $task;
+    }
+
+    /**
+     * Set a task "done" state.
+     *
+     * @param int $taskNum
+     *   The number of the task.
+     * @param bool $done
+     *   The done flag.
+     */
+    public function setTaskState($num, $done)
+    {
+        $task = $this->getTask($num);
+        if (!empty($task)) {
+            $task->setDone($done);
+        }
+    }
+
+    /**
+     * Get the list of tasks.
+     *
+     * @return array
+     *   An array of Tudu\Model\Task objects.
+     */
+    public function getTasks() {
+        return $this->tasks;
+    }
+
+    /**
+     * Get a specific task.
+     *
+     * @param int $num
+     *   The number of the task.
+     *
+     * @return Tudu\Model\Task
+     *
+     * @throw \OutOfBoundsException
+     */
+    public function getTask($num)
+    {
+        if (!empty($this->tasks)) {
+            foreach ($this->tasks as $task) {
+                if ($task->getNum() == $num) {
+                    return $task;
+                }
+            }
+        } else {
+            throw new \OutOfBoundsException("The task $num does not exist.");
+        }
     }
 
     /**
@@ -256,10 +369,32 @@ class Todo
         $stmt->execute();
         $rows = $stmt->fetchAll();
 
-        foreach ($rows as $row) {
-            $participant = new Participant($this->connection);
-            $participant->loadFromDBRow($row);
-            $this->participants[] = $participant;
+        if (!empty($rows)) {
+            foreach ($rows as $row) {
+                $participant = new Participant($this->connection);
+                $participant->loadFromDBRow($row);
+                $this->participants[] = $participant;
+            }
+        }
+
+        // Load all tasks.
+        $this->tasks = array();
+        $stmt = $this->connection->prepare("
+            SELECT  *
+              FROM  tasks
+             WHERE  todo_id = :id
+          ORDER BY  num ASC
+        ");
+        $stmt->bindValue('id', $id);
+        $stmt->execute();
+        $rows = $stmt->fetchAll();
+
+        if (!empty($rows)) {
+            foreach ($rows as $row) {
+                $task = new Task($this->connection);
+                $task->loadFromDBRow($row);
+                $this->tasks[$task->getNum()] = $task;
+            }
         }
     }
 
@@ -275,7 +410,7 @@ class Todo
 
             $stmt = $this->connection->prepare("
                 UPDATE  todos
-                   SET  title = :title, owner = :owner, last_updated = :last_updated, notify_participants = :notify_participants
+                   SET  title = :title, description = :description, owner = :owner, last_updated = :last_updated, notify_participants = :notify_participants
                  WHERE  id = :id
             ");
         } else {
@@ -283,12 +418,12 @@ class Todo
             $this->created = $this->lastUpdated = date('Y-m-d H:i:s');
 
             if (empty($this->notifyParticipants)) {
-                $this->notifyParticipants = 0;
+                $this->notifyParticipants = false;
             }
 
             $stmt = $this->connection->prepare("
                 INSERT INTO  todos
-                     VALUES  (:id, :title, :owner, :created, :last_updated, :notify_participants)
+                     VALUES  (:id, :title, :description, :owner, :created, :last_updated, :notify_participants)
             ");
             $stmt->bindValue('created', $this->created);
 
@@ -298,12 +433,24 @@ class Todo
                     $participant->setTodoId($this->id);
                 }
             }
+
+            // Add the list ID to all tasks.
+            if (!empty($this->tasks)) {
+                foreach ($this->tasks as $task) {
+                    $task->setTodoId($this->id);
+                }
+            }
+        }
+
+        if (empty($this->description)) {
+            $this->description = '';
         }
 
         // The other values are the same for both queries, which is why we bind
         // them here.
         $stmt->bindValue('id', $this->id);
         $stmt->bindValue('title', $this->title);
+        $stmt->bindValue('description', $this->description);
         $stmt->bindValue('owner', $this->owner);
         $stmt->bindValue('last_updated', $this->lastUpdated);
         $stmt->bindValue('notify_participants', (int) $this->notifyParticipants);
@@ -314,6 +461,14 @@ class Todo
         if (!empty($this->participants)) {
             foreach ($this->participants as $participant) {
                 $participant->save();
+            }
+        }
+
+        // Save all tasks and assign the key in the tasks array as the task
+        // number.
+        if (!empty($this->tasks)) {
+            foreach ($this->tasks as $task) {
+                $task->save();
             }
         }
     }
