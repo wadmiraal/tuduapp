@@ -79,20 +79,39 @@ class Main
                 // Update the sender message ID.
                 $todo->addParticipant($email->getFromAddress(), $email->getFromName(), $email->getMessageID());
 
+                // If any new persons were Cc'ed, add them as well.
+                $recipients = $email->getRecipients();
+
+                if (!empty($recipients)) {
+                    foreach ($recipients as $recipient) {
+                        $todo->addParticipant($recipient['address'], $recipient['name'], $email->getMessageID());
+                    }
+                }
+
                 // Extract the action and parameter.
                 list($action, $parameter) = Parser::extractAction($email->getBody());
 
                 switch ($action) {
                     case Parser::ADD:
-                        // @todo
+                        $todo->addTask($parameter);
                         break;
 
                     case Parser::DELETE:
-                        // @todo
+                        try {
+                            $todo->removeTask($parameter);
+                        } catch (\Exception $e) {}
+                        break;
+
+                    case Parser::DONE:
+                        try {
+                            $todo->setTaskState($parameter, true);
+                        } catch (\Exception $e) {}
                         break;
 
                     case Parser::RESET:
-                        // @todo
+                        try {
+                            $todo->setTaskState($parameter, false);
+                        } catch (\Exception $e) {}
                         break;
 
                     default:                        
@@ -101,9 +120,11 @@ class Main
                         break;
                 }
 
+                $todo->save();
+
                 Notifier::notify($todo);
 
-                return new Response('Todo list with id ' . $todo->getID() . ' updated', 200);
+                return new Response('Todo list updated, [id:' . $todo->getID() . ']', 200);
                 break;
 
             default:

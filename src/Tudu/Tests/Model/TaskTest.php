@@ -59,5 +59,18 @@ class TaskTest extends AbstractModelTestClass
         $rows = $stmt->fetchAll();
         $task2->loadFromDBRow($rows[0]);
         $this->assertEquals($task, $task2, 'Loading loads the same attributes.');
+
+        // Test removing.
+        $task2->remove();
+        $stmt = $this->connection->prepare("
+            SELECT  *
+              FROM  tasks
+             WHERE  todo_id = :id AND num = :num
+        ");
+        $stmt->bindValue('id', $task->getTodoID());
+        $stmt->bindValue('num', $task->getNum());
+        $stmt->execute();
+        $rows = $stmt->fetchAll();
+        $this->assertEquals(0, count($rows), 'Removing the task deletes it from the database.');
     }
 }

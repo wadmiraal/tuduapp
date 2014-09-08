@@ -222,6 +222,9 @@ class Todo
         if (!empty($this->participants)) {
             foreach ($this->participants as $participant) {
                 if ($participant->getEmail() === $email) {
+                    if ($lastMessageID) {
+                        $participant->setLastMessageID($lastMessageID);
+                    }
                     return;
                 }
             }
@@ -320,7 +323,7 @@ class Todo
      *
      * @return Tudu\Model\Task
      *
-     * @throw \OutOfBoundsException
+     * @throw \OutOfRangeException
      */
     public function getTask($num)
     {
@@ -330,9 +333,32 @@ class Todo
                     return $task;
                 }
             }
-        } else {
-            throw new \OutOfBoundsException("The task $num does not exist.");
         }
+        
+        throw new \OutOfRangeException("The task $num does not exist.");
+    }
+
+    /**
+     * Remove a specific task.
+     *
+     * @param int $num
+     *   The number of the task.
+     *
+     * @throw \OutOfRangeException
+     */
+    public function removeTask($num)
+    {
+        if (!empty($this->tasks)) {
+            foreach ($this->tasks as $i => $task) {
+                if ($task->getNum() == $num) {
+                    $task->remove();
+                    unset($this->tasks[$i]);
+                    return;
+                }
+            }
+        }
+        
+        throw new \OutOfRangeException("The task $num does not exist.");
     }
 
     /**

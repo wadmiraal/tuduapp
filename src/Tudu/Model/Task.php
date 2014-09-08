@@ -214,7 +214,7 @@ class Task
     }
 
     /**
-     * Save a participant.
+     * Save a task.
      */
     public function save()
     {
@@ -269,6 +269,22 @@ class Task
         $stmt->bindValue('done', (int) $this->done);
         $stmt->bindValue('meta_due', $this->metaDue);
         $stmt->bindValue('meta_assigned_to', $this->metaAssignedTo);
+
+        $stmt->execute();
+    }
+
+    /**
+     * Remove the task.
+     */
+    public function remove()
+    {
+        $stmt = $this->connection->prepare("
+        DELETE FROM  tasks
+              WHERE  todo_id = :todo_id AND num = :num
+        ");
+
+        $stmt->bindValue('todo_id', $this->todoID);
+        $stmt->bindValue('num', (int) $this->num);
 
         $stmt->execute();
     }

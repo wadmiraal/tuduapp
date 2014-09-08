@@ -39,9 +39,9 @@ class MainTest extends WebTestCase
     }
 
     /**
-     * Text CloudMailin "new" list callback.
+     * Text CloudMailin inbox list callback.
      */
-    public function testCloudMailinNewInbox()
+    public function testCloudMailinInbox()
     {
         $client = $this->createClient();
         $tests = array(
@@ -104,6 +104,7 @@ class MainTest extends WebTestCase
                 ),
             ),
         );
+
         foreach ($tests as $label => $data) {
             $crawler = $client->request('POST', '/inbox', $data['post']);
             $this->assertTrue($client->getResponse()->isSuccessful(), "Request is successful.");
@@ -128,6 +129,154 @@ class MainTest extends WebTestCase
             $tasks = array();
             foreach ($todo->getTasks() as $task) {
                 $tasks[] = $task->getTask();
+            }
+
+            $this->assertEquals($tasks, $data['expected']['tasks'], 'Added correct tasks.');
+        }
+
+        $todo = new Todo($this->model->getDBDriver());
+        $todo->addParticipant('test@bot.com', 'Test Bot');
+        $todo->setTitle('My new list');
+        $todo->setOwner('test@bot.com');
+        $todo->addTask('Do stuff');
+        $todo->save();
+
+        $client = $this->createClient();
+        $tests = array(
+            'Add a new task' => array(
+                'post' => array(
+                    'plain' => 'Add: This is a new task',
+                    'headers' => array(
+                        'From' => 'Test Bot <test@bot.com>',
+                        'To'   => 'please-reply@tuduapp.com',
+                        'Cc'   => 'Jimmy <jimmy@test.com>',
+                        'Message-ID' => 'message--id',
+                        'Subject'    => 'My new list [id:' . $todo->getID() . ']',
+                    ),
+                ),
+                'expected' => array(
+                    'tasks' => array(
+                        'Do stuff' => false,
+                        'This is a new task' => false,
+                    ),
+                    'participants' => array(
+                        array(
+                            'email' => 'test@bot.com',
+                            'name'  => 'Test Bot',
+                        ),
+                        array(
+                            'email' => 'jimmy@test.com',
+                            'name'  => 'Jimmy',
+                        ),
+                    ),
+                ),
+            ),
+            'Set a task as done' => array(
+                'post' => array(
+                    'plain' => 'Done 2',
+                    'headers' => array(
+                        'From' => 'Test Bot <test@bot.com>',
+                        'To'   => 'please-reply@tuduapp.com',
+                        'Cc'   => '',
+                        'Message-ID' => 'message--id',
+                        'Subject'    => 'My new list [id:' . $todo->getID() . ']',
+                    ),
+                ),
+                'expected' => array(
+                    'tasks' => array(
+                        'Do stuff' => false,
+                        'This is a new task' => true,
+                    ),
+                    'participants' => array(
+                        array(
+                            'email' => 'test@bot.com',
+                            'name'  => 'Test Bot',
+                        ),
+                        array(
+                            'email' => 'jimmy@test.com',
+                            'name'  => 'Jimmy',
+                        ),
+                    ),
+                ),
+            ),
+            'Set a task as "not" done' => array(
+                'post' => array(
+                    'plain' => 'Reset 2',
+                    'headers' => array(
+                        'From' => 'Test Bot <test@bot.com>',
+                        'To'   => 'please-reply@tuduapp.com',
+                        'Cc'   => '',
+                        'Message-ID' => 'message--id',
+                        'Subject'    => 'My new list [id:' . $todo->getID() . ']',
+                    ),
+                ),
+                'expected' => array(
+                    'tasks' => array(
+                        'Do stuff' => false,
+                        'This is a new task' => false,
+                    ),
+                    'participants' => array(
+                        array(
+                            'email' => 'test@bot.com',
+                            'name'  => 'Test Bot',
+                        ),
+                        array(
+                            'email' => 'jimmy@test.com',
+                            'name'  => 'Jimmy',
+                        ),
+                    ),
+                ),
+            ),
+            'Delete a task' => array(
+                'post' => array(
+                    'plain' => 'Delete 1',
+                    'headers' => array(
+                        'From' => 'Test Bot <test@bot.com>',
+                        'To'   => 'please-reply@tuduapp.com',
+                        'Cc'   => '',
+                        'Message-ID' => 'message--id',
+                        'Subject'    => 'My new list [id:' . $todo->getID() . ']',
+                    ),
+                ),
+                'expected' => array(
+                    'tasks' => array(
+                        'This is a new task' => false,
+                    ),
+                    'participants' => array(
+                        array(
+                            'email' => 'test@bot.com',
+                            'name'  => 'Test Bot',
+                        ),
+                        array(
+                            'email' => 'jimmy@test.com',
+                            'name'  => 'Jimmy',
+                        ),
+                    ),
+                ),
+            ),
+        );
+
+        foreach ($tests as $label => $data) {
+            $crawler = $client->request('POST', '/inbox', $data['post']);
+            $this->assertTrue($client->getResponse()->isSuccessful(), "Request is successful.");
+            $this->assertContains('Todo list updated', $client->getResponse()->getContent(), "The response contains the message saying the list was created.");
+
+            $todo2 = new Todo($this->model->getDBDriver());
+            $todo2->load($todo->getID());
+
+            $participants = array();
+            foreach ($todo2->getParticipants() as $participant) {
+                $participants[] = array(
+                    'email' => $participant->getEmail(),
+                    'name'  => $participant->getName(),
+                );
+            }
+
+            $this->assertEquals($participants, $data['expected']['participants'], 'Added correct participants.');
+
+            $tasks = array();
+            foreach ($todo2->getTasks() as $task) {
+                $tasks[$task->getTask()] = $task->getDone();
             }
 
             $this->assertEquals($tasks, $data['expected']['tasks'], 'Added correct tasks.');

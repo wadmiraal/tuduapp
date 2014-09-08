@@ -126,5 +126,17 @@ class TodoTest extends AbstractModelTestClass
         // Check.
         $this->assertEquals(false, $todo2->getTask(1)->getDone(), 'Test setting a task done state.');
         $this->assertEquals(true, $todo2->getTask(2)->getDone(), 'Test setting a task done state.');
+
+        // Deleting tasks.
+        $todo->removeTask(1);
+        $todo->save();
+
+        $this->setExpectedException('OutOfRangeException', 'The task 1 does not exist.');
+        $todo->getTask(1);
+
+        $todo2->load($todo->getID());
+
+        $this->setExpectedException('OutOfRangeException', 'The task 1 does not exist.');
+        $todo2->getTask(1);
     }
 }
