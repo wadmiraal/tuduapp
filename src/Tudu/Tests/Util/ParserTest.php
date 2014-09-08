@@ -73,5 +73,99 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         foreach ($tests as $string => $expected) {
             $this->assertEquals($expected, Parser::extractAction($string), "Test extracting the action from '$string'.");
         }
+
+        $tests = array(
+            'a simple string' => array(
+                'string' => "- My task",
+                'expected' => array(
+                    '',
+                    array('My task'),
+                ),
+            ),
+            'a simple string, with different bullet points' => array(
+                'string' => "- My task\n* My other task",
+                'expected' => array(
+                    '',
+                    array(
+                        'My task',
+                        'My other task',
+                    ),
+                ),
+            ),
+            'a simple string, with UTF8 characters and Mac OS returns' => array(
+                'string' => "- Mèïöôàüéä\r* M#°§èïöôàüéä",
+                'expected' => array(
+                    '',
+                    array(
+                        'Mèïöôàüéä',
+                        'M#°§èïöôàüéä',
+                    ),
+                ),
+            ),
+            'a simple string with introduction text' => array(
+                'string' => "Introduction\n-Task 1\r\n* Task 2",
+                'expected' => array(
+                    'Introduction',
+                    array(
+                        'Task 1',
+                        'Task 2',
+                    ),
+                ),
+            ),
+            'a simple string with a multi paragraph introduction text' => array(
+                'string' => "Introduction\nHi there\r\n\r\nAll of you\n- Task 1",
+                'expected' => array(
+                    "Introduction\nHi there\n\nAll of you",
+                    array('Task 1'),
+                ),
+            ),
+            'a complex string, with multiple list styles and text in between.' => array(
+                'string' => "This is my text right here.
+
+asjkd hsad989w40932 jksd []]´fdèpe^Q0'E9 12ESKCXX <,A
+sqàéds dfkélsdglè¨40t^3ot q43t7fsdcm:;>YXc dsackln ?`?öö!!!öàxcà.X%57SW%4¢#@°342342344
+
+
+
+
+aséà dlàélad'^q3o¨àasc è@¦°#°¬§°|¬§¢¬§°¢°§¬¢°¬|\gkad hgz8tq49g3
+
+- my listr
+- asdlkj jklqd934698 §°#°§¢#¦¢#¢@#4234èééàààèé èèdècé[]}àD!ü£äF£SSFDafdWFewf
+- élk sd?F`we^tffw sà<dév <sdfé '48 357 ztoiewfu ljéSCSAC
+* KLSCa98AF7932F CX,X<VC MDFHGKHAI98Q43'6^'457¨HGFM,B.B DF.fdg-GSD¨CASéDàAàSDS FG
+
+* L0'ASD ''^12E{DéFàSDéG F'QWEF'P34¨FèSàC Cls aàDvdf d dsfsdf[][]
+
+¨R
+T^
+ERAGA
+
+asdl adsék léas
+àéalkd ésalkd",
+                'expected' => array(
+                    "This is my text right here.
+
+asjkd hsad989w40932 jksd []]´fdèpe^Q0'E9 12ESKCXX <,A
+sqàéds dfkélsdglè¨40t^3ot q43t7fsdcm:;>YXc dsackln ?`?öö!!!öàxcà.X%57SW%4¢#@°342342344
+
+
+
+
+aséà dlàélad'^q3o¨àasc è@¦°#°¬§°|¬§¢¬§°¢°§¬¢°¬|\gkad hgz8tq49g3",
+                    array(
+                        'my listr',
+                        'asdlkj jklqd934698 §°#°§¢#¦¢#¢@#4234èééàààèé èèdècé[]}àD!ü£äF£SSFDafdWFewf',
+                        "élk sd?F`we^tffw sà<dév <sdfé '48 357 ztoiewfu ljéSCSAC",
+                        "KLSCa98AF7932F CX,X<VC MDFHGKHAI98Q43'6^'457¨HGFM,B.B DF.fdg-GSD¨CASéDàAàSDS FG",
+                        "L0'ASD ''^12E{DéFàSDéG F'QWEF'P34¨FèSàC Cls aàDvdf d dsfsdf[][]"
+                    ),
+                ),
+            ),
+        );
+
+        foreach ($tests as $label => $data) {
+            $this->assertEquals($data['expected'], Parser::extractTodoList($data['string']), "Test extracting information from $label.");
+        }
     }
 }

@@ -34,6 +34,42 @@ class Parser
     }
 
     /**
+     * Extract the introduction text and tasks from the email body.
+     *
+     * Parse the email body and extract the first paragraphs - which will serve
+     * as the list description - and parse all listed tasks, returning them in
+     * an array.
+     * A list of tasks can either be a list with '-' or '*' bullets.
+     *
+     * @param string $body
+     *   The email body.
+     *
+     * @return array
+     *   An array with 2 elements. The first element is the list description (or
+     *   an empty string) and the second a list of tasks.
+     */
+    public static function extractTodoList($body)
+    {
+        $body = trim(str_replace(array("\r\n", "\r"), "\n", $body));
+
+        // Get the description. Split on the first task.
+        $parts = preg_split('/\n?\s*(-|\*)/', $body);
+        $description = trim($parts[0]);
+
+        // Get the tasks.
+        $matches = array();
+        $tasks = array();
+
+        if (preg_match_all('/\n?\s*(-|\*)\s*(.+)/', $body, $matches)) {
+            if (!empty($matches[2])) {
+                $tasks = $matches[2];
+            }
+        }
+
+        return array($description, $tasks);
+    }
+
+    /**
      * Extract the action from the email body.
      *
      * @param string $body
