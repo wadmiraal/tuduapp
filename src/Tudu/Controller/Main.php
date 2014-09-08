@@ -9,6 +9,7 @@ namespace Tudu\Controller;
 
 use Tudu\Email\CloudMailinEmail;
 use Tudu\Util\Notifier;
+use Tudu\Util\Parser;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,8 +35,11 @@ class Main
             case $conf['tudu.emails.create']:
                 $todo = $app['todo_db_service'];
 
-                $todo->setOwner($email->getFromAddress());
+                list($description, $tasks) = Parser::extractTodoList($email->getBody());
+
                 $todo->setTitle($email->getSubject());
+                $todo->setDescription($description);
+                $todo->setOwner($email->getFromAddress());
                 $todo->addParticipant($email->getFromAddress(), $email->getFromName(), $email->getMessageID());
 
                 $recipients = $email->getRecipients();
@@ -46,9 +50,17 @@ class Main
                     }
                 }
 
+                if (!empty($tasks)) {
+                    foreach ($tasks as $task) {
+                        $todo->addTask($task);
+                    }
+                }
+
                 $todo->save();
 
                 Notifier::notify($todo);
+
+                return new Response('Todo list created, [id:' . $todo->getID() . ']', 201);
                 break;
 
             case $conf['tudu.emails.update']:
@@ -90,13 +102,13 @@ class Main
                 }
 
                 Notifier::notify($todo);
+
+                return new Response('Todo list with id ' . $todo->getID() . ' updated', 200);
                 break;
 
             default:
                 $to = $email->getTo();
                 return new Response("Incorrect 'To' address. Received: {$to}", 400);
         }
-
-        return new Response('OK', 201);
     }
 }

@@ -119,6 +119,13 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                     array('Task 1'),
                 ),
             ),
+            'a simple string with a multi paragraph introduction text containing Markdown' => array(
+                'string' => "Introduction\nHi* there*\r\n\r\n**All of you**\n- Task 1",
+                'expected' => array(
+                    "Introduction\nHi* there*\n\n**All of you**",
+                    array('Task 1'),
+                ),
+            ),
             'a complex string, with multiple list styles and text in between.' => array(
                 'string' => "This is my text right here.
 

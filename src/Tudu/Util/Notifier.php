@@ -8,6 +8,8 @@
 
 namespace Tudu\Util;
 
+use Michelf\Markdown;
+
 class Notifier
 {
     /**
@@ -21,6 +23,11 @@ class Notifier
      */
     public static function notify($todo)
     {
+        // $my_html = Markdown::defaultTransform($my_text);
 
+        // Skip sending email if we're in the development environment.
+        if (!(defined('APP_ENV') && APP_ENV === 'development')) {
+            mail();
+        }
     }
 }

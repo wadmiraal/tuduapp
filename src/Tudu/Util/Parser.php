@@ -53,16 +53,16 @@ class Parser
         $body = trim(str_replace(array("\r\n", "\r"), "\n", $body));
 
         // Get the description. Split on the first task.
-        $parts = preg_split('/\n?\s*(-|\*)/', $body);
+        $parts = preg_split('/(\n?\s*-|(\n+|^)\s*\*\s+)/', $body);
         $description = trim($parts[0]);
 
         // Get the tasks.
         $matches = array();
         $tasks = array();
 
-        if (preg_match_all('/\n?\s*(-|\*)\s*(.+)/', $body, $matches)) {
-            if (!empty($matches[2])) {
-                $tasks = $matches[2];
+        if (preg_match_all('/(\n?\s*-|(\n+|^)\s*\*\s+)\s*(.+)/', $body, $matches)) {
+            if (!empty($matches[3])) {
+                $tasks = $matches[3];
             }
         }
 

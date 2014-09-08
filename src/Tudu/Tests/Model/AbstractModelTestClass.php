@@ -26,12 +26,15 @@ class AbstractModelTestClass extends \PHPUnit_Framework_TestCase
     /**
      * Set up.
      *
-     * Generate a random, unique name for the Sqlite database file. Create the
-     * database itself.
+     * Create the database itself. If no filename is provided, generate a
+     * random, unique name for the Sqlite database file.
+     *
+     * @param string $dbFile = null
+     *   The name of the database file.
      */
-    protected function setUp()
+    protected function setUp($dbFile = null)
     {
-        $this->dbFile = __DIR__ . '/../../../../.tmp/' . uniqid() . '.db';
+        $this->dbFile = isset($dbFile) ? $dbFile : __DIR__ . '/../../../../.tmp/' . uniqid() . '.db';
 
         if (!file_exists(__DIR__ . '/../../../../.tmp')) {
             mkdir(__DIR__ . '/../../../../.tmp');
@@ -96,7 +99,7 @@ class AbstractModelTestClass extends \PHPUnit_Framework_TestCase
      *
      * @return \Doctrine\DBAL\Connection
      */
-    protected function getDBDriver()
+    public function getDBDriver()
     {
         if (!isset($this->connection)) {
             $this->connection = \Doctrine\DBAL\DriverManager::getConnection(array(
