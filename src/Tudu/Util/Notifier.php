@@ -20,14 +20,63 @@ class Notifier
      *
      * @param Tudu\Model\Todo $todo
      *   The todo list model.
+     * @param \Silex\Application $app
+     *   The application.
      */
-    public static function notify($todo)
+    public static function notify(\Tudu\Model\Todo $todo, \Silex\Application $app)
     {
-        // $my_html = Markdown::defaultTransform($my_text);
+        $tasks = array();
+        $doneTasks = array();
+        $conf = $app['conf'];
+
+        foreach ($todo->getTasks() as $task) {
+            $taskDescription = preg_replace('/\[.*(assigned to|due)\s*:\s*([^\]]+)\]/', '', $task->getTask());
+            $taskDescription = Markdown::defaultTransform($taskDescription);
+
+            if ($task->getDone()) {
+                $doneTasks[$task->getNum()] = $taskDescription;
+            } else {
+                $tasks[$task->getNum()] = $taskDescription;
+            }
+        }
+
+        $body = $todo->getDescription();
+
+        $body .= "\n\n";
+
+        foreach ($tasks as $num => $task) {
+            $body .= "[$num] $task\n";
+        }
+
+        foreach ($tasks as $num => $task) {
+            $body .= "--[$num] $task--\n";
+        }
+
+        $from = $conf['tudu.emails.update'];
+        if (!empty($conf['tudu.emails.names'])) {
+            $name = array_rand($conf['tudu.emails.names']);
+            $from = "$name <$from>"; 
+        }
+
+        if (!empty($conf['tudu.emails.signatures.html'])) {
+            $body .= "\n\n" . array_rand($conf['tudu.emails.signatures.html']);
+        }
 
         // Skip sending email if we're in the development environment.
         if (!(defined('APP_ENV') && APP_ENV === 'development')) {
-            mail();
+            foreach ($todo->getParticipants() as $participant) {
+                mail(
+                    $participant->getEmail(),
+                    $todo->getTitle() . '[id:' . $todo->getID() . ']',
+                    $body,
+                    implode("\r\n", array(
+                        'From: ' . $from,
+                        'In-Reply-To: ' . $participant->getLastMessageID(),
+                    ))
+                );   
+            }
         }
+
+        return $body;
     }
 }

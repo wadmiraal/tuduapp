@@ -58,7 +58,7 @@ class Main
 
                 $todo->save();
 
-                Notifier::notify($todo);
+                Notifier::notify($todo, $app);
 
                 return new Response('Todo list created, [id:' . $todo->getID() . ']', 201);
                 break;
@@ -123,7 +123,7 @@ class Main
 
                 $todo->save();
 
-                Notifier::notify($todo);
+                Notifier::notify($todo, $app);
 
                 return new Response('Todo list updated, [id:' . $todo->getID() . ']', 200);
                 break;
