@@ -20,6 +20,42 @@ class CloudMailinEmailTest extends \PHPUnit_Framework_TestCase
     {
         $default = $this->getDefaultRequest();
 
+        $toAddress = array(
+            'a simple to header should return the correct address' => array(
+                'string'   => 'john@doe.com',
+                'expected' => 'john@doe.com',
+            ),
+            'a simple to header should return the correct address, trimmed' => array(
+                'string'   => '    john@doe.com      ',
+                'expected' => 'john@doe.com',
+            ),
+            'a complex to header should return the correct address, with no <>' => array(
+                'string'   => '  "John Doe, The second" <john@doe.com>    ',
+                'expected' => 'john@doe.com',
+            ),
+            'a complex email address in the to header should return the correct address' => array(
+                'string'   => '  "John Doe, The second" <john-doe._.--asd--AS09888987@doe.doe.doe.com>    ',
+                'expected' => 'john-doe._.--asd--AS09888987@doe.doe.doe.com',
+            ),
+            'an incorrect email address in the to header should not be recognized' => array(
+                'string'   => 'john-doe._.--asd--AS098?!88987@doe..doe.doe.com',
+                'expected' => '',
+            ),
+            'a name resembling an email address in the to header should not be used instead of the actual address' => array(
+                'string'   => 'john@doe.com <jane@doe.com>',
+                'expected' => 'jane@doe.com',
+            ),
+        );
+
+        foreach ($toAddress as $label => $data) {
+            $default['headers']['To'] = $data['string'];
+            $request = new Request(array(), $default);
+
+            $email = new CloudMailinEmail($request);
+
+            $this->assertEquals($data['expected'], $email->getTo(), "Parsing $label.");
+        }
+
         $rawFrom = array(
             'a simple raw header should return as is' => array(
                 'string'   => 'john@doe.com',

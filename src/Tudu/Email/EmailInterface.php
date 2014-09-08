@@ -13,7 +13,14 @@ namespace Tudu\Email;
 
 interface EmailInterface
 {
-
+    /**
+     * Get the email destinator.
+     *
+     * @return string
+     *   The address the email was sent to.
+     */
+    public function getTo();
+    
     /**
      * Get the email body.
      *

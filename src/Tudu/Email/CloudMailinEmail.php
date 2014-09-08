@@ -50,6 +50,7 @@ class CloudMailinEmail implements EmailInterface
             case CloudMailinEmail::MULTIPART:
                 $this->body = $this->extractMultipartBody($request);
                 $this->subject = $this->extractMultipartSubject($request);
+                $this->to = $this->extractMultipartTo($request);
                 $this->from = $this->extractMultipartFrom($request);
                 $this->messageID = $this->extractMultipartMessageID($request);
                 $this->recipients = $this->extractMultipartRecipients($request);
@@ -59,6 +60,14 @@ class CloudMailinEmail implements EmailInterface
                 throw new \Exception("Mode is not available or not implemented yet.");
                 break;
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTo()
+    {
+        return $this->to;
     }
 
     /**
@@ -181,6 +190,29 @@ class CloudMailinEmail implements EmailInterface
                 return trim($headers['Subject']);
             } else {
                 return '';
+            }
+        }
+
+        throw new \Exception("No headers found.");
+    }
+
+    /**
+     * Extract the "To" header email address.
+     *
+     * @param Symfony\Component\HttpFoundation\Request $request
+     *   The request object. Must be a POST (or PUT) request.
+     *
+     * @return string
+     *   The To email address.
+     *
+     * @throws Exception
+     *   If the request contains no From header, it will throw an error.
+     */
+    protected function extractMultipartTo(Request $request)
+    {
+        if ($headers = $request->request->get('headers', FALSE)) {
+            if (!empty($headers['To'])) {
+                return $this->extractRecipientAddress(trim($headers['To']));
             }
         }
 
