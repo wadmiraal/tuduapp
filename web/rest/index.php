@@ -13,6 +13,4 @@ require_once __DIR__ . '/../../app/config.php';
 require_once __DIR__ . '/../../app/app.php';
 require_once __DIR__ . '/../../app/routes.php';
 
-$app['debug'] = true;
-
 $app->run();
