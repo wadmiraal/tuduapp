@@ -8,6 +8,7 @@
 namespace Tudu\Tests\Util;
 
 use Tudu\Util\Parser;
+use Tudu\Model\Todo;
 
 class ParserTest extends \PHPUnit_Framework_TestCase
 {
@@ -173,6 +174,92 @@ aséà dlàélad'^q3o¨àasc è@¦°#°¬§°|¬§¢¬§°¢°§¬¢°¬|\gkad h
 
         foreach ($tests as $label => $data) {
             $this->assertEquals($data['expected'], Parser::extractTodoList($data['string']), "Test extracting information from $label.");
+        }
+    }
+
+    /**
+     * Test parsing task meta data.
+     */
+    public function testTaskMetaData()
+    {
+        $todo = new Todo(\Doctrine\DBAL\DriverManager::getConnection(array(
+            'driver' => 'pdo_sqlite',
+        ), new \Doctrine\DBAL\Configuration()));
+        $todo->addParticipant('john@doe.com', 'John Doe');
+        $todo->addParticipant('janney@doe.com', '');
+        $todo->addParticipant('ben@email.co.uk', 'Benji');
+        $todo->addParticipant('jimmy.james@gmail.com', 'Jim');
+
+        $tests = array(
+            'a task with to meta data' => array(
+                'string' => 'Task',
+                'expected' => array(
+                    'due'        => '',
+                    'assignedTo' => '',
+                ),
+            ),
+            'a task with a due date, in US format' => array(
+                'string' => 'Task [due: Sep 1st, 2014]',
+                'expected' => array(
+                    'due'        => '2014-09-01 00:00:00',
+                    'assignedTo' => '',
+                ),
+            ),
+            'a task with a due date, saying "tomorrow"' => array(
+                'string' => 'Task [due: tomorrow]',
+                'expected' => array(
+                    'due'        => date('Y-m-d 00:00:00', strtotime('now +1day')),
+                    'assignedTo' => '',
+                ),
+            ),
+            'a task with a assigned to name' => array(
+                'string' => 'Task [assigned to:  Walter]',
+                'expected' => array(
+                    'due'        => '',
+                    'assignedTo' => 'Walter',
+                ),
+            ),
+            'a task with a assigned to email' => array(
+                'string' => 'Task [assigned to: wad@wad.com]',
+                'expected' => array(
+                    'due'        => '',
+                    'assignedTo' => 'wad@wad.com',
+                ),
+            ),
+            'a task with a assigned to name from the participants' => array(
+                'string' => 'Task [assigned to:  Benji]',
+                'expected' => array(
+                    'due'        => '',
+                    'assignedTo' => 'ben@email.co.uk',
+                ),
+            ),
+            'a task with a assigned to name from the participants, but with in lowercase' => array(
+                'string' => 'Task [assigned to:  benji]',
+                'expected' => array(
+                    'due'        => '',
+                    'assignedTo' => 'ben@email.co.uk',
+                ),
+            ),
+            'a task with a assigned to name from the participants, but from the email' => array(
+                'string' => 'Task [assigned to:  Jane]',
+                'expected' => array(
+                    'due'        => '',
+                    'assignedTo' => 'janney@doe.com',
+                ),
+            ),
+            'a task with a assigned to name and a date, with lots of spacing' => array(
+                'string' => 'Task [  assigned to:  benji  ]   [  due:   August  2014  ]  ',
+                'expected' => array(
+                    'due'        => '2014-08-01 00:00:00',
+                    'assignedTo' => 'ben@email.co.uk',
+                ),
+            ),
+        );
+
+        foreach ($tests as $label => $data) {
+            list($metaDue, $metaAssignedTo) = Parser::extractTaskMeta($data['string'], $todo);
+            $this->assertEquals($data['expected']['due'], $metaDue, "Parsing $label gets the correct due date.");
+            $this->assertEquals($data['expected']['assignedTo'], $metaAssignedTo, "Parsing $label gets the correct assigned email.");
         }
     }
 }

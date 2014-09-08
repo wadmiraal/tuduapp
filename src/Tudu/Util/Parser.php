@@ -98,4 +98,62 @@ class Parser
             return array(self::COMMENT, $parts[0]);
         }
     }
+
+    /**
+     * Extract a task meta data.
+     *
+     * Extract a task meta data, due date and assigned person. If the assigned
+     * person is not an email, check if the person is a participant of the todo
+     * list.
+     *
+     * @param string $task
+     *   The task string.
+     * @param \Tudu\Model\Todo $todo = null
+     *   An optional todo list to check participants.
+     *
+     * @return array
+     *   The first key is the meta due date, the second is the assigned person.
+     */
+    public static function extractTaskMeta($task, $todo = null)
+    {
+        $due = '';
+        $match = array();
+        if (preg_match('/\[.*due\s*:\s*([^\]]+)\]/', $task, $match)) {
+            $match[1] = trim($match[1]);
+
+            $time = strtotime($match[1]);
+
+            if ($time) {
+                $due = date('Y-m-d H:i:s', $time);
+            } else {
+                $due = $match[1];
+            }
+        }
+
+        $assignedTo = '';
+        $match = array();
+        if (preg_match('/\[.*assigned to\s*:\s*([^\]]+)\]/', $task, $match)) {
+            $assignedTo = trim($match[1]);
+
+            // If not an email address, try checking against the todo
+            // participant list.
+            if (isset($todo) && !preg_match('/[\w._%+-]+@[\w.-]+\.\w{2,4}/', $assignedTo)) {
+                foreach ($todo->getParticipants() as $participant) {
+                    // Cast both strings to lowercase to compare.
+                    $tmpAssignedTo = strtolower($assignedTo);
+                    $tmpName = strtolower($participant->getName());
+
+                    // Compare the first part of the email with the name.
+                    $perc = 0;
+                    similar_text($tmpAssignedTo, @reset(explode('@', $participant->getEmail())), $perc);
+                    if ($tmpAssignedTo === $tmpName || $perc > 75) {
+                        $assignedTo = $participant->getEmail();
+                        break;
+                    }
+                }
+            }
+        }
+
+        return array($due, $assignedTo);
+    }
 }

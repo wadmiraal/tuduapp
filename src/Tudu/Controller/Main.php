@@ -93,7 +93,8 @@ class Main
 
                 switch ($action) {
                     case Parser::ADD:
-                        $todo->addTask($parameter);
+                        list($metaDue, $metaAssignedTo) = Parser::extractTaskMeta($parameter, $todo);
+                        $todo->addTask($parameter, $metaDue, $metaAssignedTo);
                         break;
 
                     case Parser::DELETE:
