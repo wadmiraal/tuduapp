@@ -229,7 +229,7 @@ class Task
         }
 
         // Make sure we have a number. If we don't, this is a new task.
-        if (!isset($this->num)) {
+        if (empty($this->num)) {
             $new = true;
             $stmt = $this->connection->prepare("
                 SELECT  num
@@ -241,7 +241,7 @@ class Task
             $stmt->bindValue('todo_id', $this->todoID);
             $stmt->execute();
             $highest_num = $stmt->fetch(\PDO::FETCH_ASSOC);
-            $this->num = !empty($highest_num['num']) ? (int) $highest_num['num'] + 1 : 0;
+            $this->num = !empty($highest_num['num']) ? (int) $highest_num['num'] + 1 : 1;
         }
 
         // Make sure we have a "done" flag.

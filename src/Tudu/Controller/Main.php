@@ -93,7 +93,6 @@ class Main
                 break;
 
             default:
-                // @todo Notify sender the email was not usable.
                 $to = $email->getTo();
                 return new Response("Incorrect 'To' address. Received: {$to}", 400);
         }

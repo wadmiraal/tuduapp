@@ -103,7 +103,7 @@ class TodoTest extends AbstractModelTestClass
         $todo->save();
 
         // Check save went as planned.
-        $time = date('Y-m-d H:i:s');
+        $time = date('Y-m-d H:i:00');
         $this->assertNotNull($todo->getID(), 'Saving assigns an ID.');
         $this->assertEquals($time, $todo->getCreated(), 'Saving assigns a created date if none was specified.');
         $this->assertEquals($time, $todo->getLastUpdated(), 'Saving assigns a last updated date if none was specified.');

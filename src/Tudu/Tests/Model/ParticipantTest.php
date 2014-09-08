@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Todo model unit tests.
+ * Participant model unit tests.
  */
 
 namespace Tudu\Tests\Model;

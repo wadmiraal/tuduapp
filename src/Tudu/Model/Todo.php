@@ -353,6 +353,7 @@ class Todo
 
         $this->id = $id;
         $this->title = $data['title'];
+        $this->description = $data['description'];
         $this->owner = $data['owner'];
         $this->created = $data['created'];
         $this->lastUpdated = $data['last_updated'];
@@ -393,7 +394,7 @@ class Todo
             foreach ($rows as $row) {
                 $task = new Task($this->connection);
                 $task->loadFromDBRow($row);
-                $this->tasks[$task->getNum()] = $task;
+                $this->tasks[] = $task;
             }
         }
     }
@@ -406,7 +407,7 @@ class Todo
     public function save()
     {
         if (!empty($this->id)) {
-            $this->lastUpdated = date('Y-m-d H:i:s');
+            $this->lastUpdated = date('Y-m-d H:i:00');
 
             $stmt = $this->connection->prepare("
                 UPDATE  todos
@@ -415,7 +416,7 @@ class Todo
             ");
         } else {
             $this->id = uniqid('', true);
-            $this->created = $this->lastUpdated = date('Y-m-d H:i:s');
+            $this->created = $this->lastUpdated = date('Y-m-d H:i:00');
 
             if (empty($this->notifyParticipants)) {
                 $this->notifyParticipants = false;
