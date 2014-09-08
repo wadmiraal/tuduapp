@@ -73,7 +73,7 @@ class Main
 
                 if (empty($todo)) {
                     // @todo Notify sender the email was not usable.
-                    return new Response("Incorrect 'To' address. Received: {$to}", 400);
+                    return new Response("Unkown list ID", 404);
                 }
 
                 // Update the sender message ID.
