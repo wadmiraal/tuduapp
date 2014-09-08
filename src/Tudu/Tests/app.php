@@ -39,5 +39,8 @@ require_once __DIR__ . '/../../../app/routes.php';
 // Enable debugging.
 $app['debug'] = true;
 
+// Don't display exceptions in HTML format, but give them back raw.
+$app['exception_handler']->disable();
+
 // Return the application, ready for booting.
 return $app;
