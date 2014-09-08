@@ -32,6 +32,7 @@ class Notifier
         foreach ($todo->getTasks() as $task) {
             $taskDescription = preg_replace('/\[.*(assigned to|due)\s*:\s*([^\]]+)\]/', '', $task->getTask());
             $taskDescription = Markdown::defaultTransform($taskDescription);
+            $taskDescription = strip_tags($taskDescription, '<a><em><i><b><strong><code>');
 
             if ($task->getDone()) {
                 $doneTasks[$task->getNum()] = $taskDescription;
@@ -48,18 +49,18 @@ class Notifier
             $body .= "[$num] $task\n";
         }
 
-        foreach ($tasks as $num => $task) {
+        foreach ($doneTasks as $num => $task) {
             $body .= "--[$num] $task--\n";
         }
 
         $from = $conf['tudu.emails.update'];
         if (!empty($conf['tudu.emails.names'])) {
-            $name = array_rand($conf['tudu.emails.names']);
-            $from = "$name <$from>"; 
+            $name = $conf['tudu.emails.names'][array_rand($conf['tudu.emails.names'])];
+            $from = "\"$name\" <$from>"; 
         }
 
         if (!empty($conf['tudu.emails.signatures.html'])) {
-            $body .= "\n\n" . array_rand($conf['tudu.emails.signatures.html']);
+            $body .= "\n\n" . $conf['tudu.emails.signatures.html'][array_rand($conf['tudu.emails.signatures.html'])];
         }
 
         // Skip sending email if we're in the development environment.
@@ -67,7 +68,7 @@ class Notifier
             foreach ($todo->getParticipants() as $participant) {
                 mail(
                     $participant->getEmail(),
-                    $todo->getTitle() . '[id:' . $todo->getID() . ']',
+                    $todo->getTitle() . ' [id:' . $todo->getID() . ']',
                     $body,
                     implode("\r\n", array(
                         'From: ' . $from,
