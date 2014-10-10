@@ -11,21 +11,15 @@
 namespace Tudu\Email;
 
 use Tudu\Email\EmailInterface;
+use Tudu\Email\BaseEmail;
 use Symfony\Component\HttpFoundation\Request;
 
-class CloudMailinEmail implements EmailInterface
+class CloudMailinEmail extends BaseEmail
 {
 
     const MULTIPART = 'multipart';
     const JSON = 'json';
     const RAW = 'raw';
-
-    protected $body;
-    protected $subject;
-    protected $to;
-    protected $from;
-    protected $messageID;
-    protected $recipients;
 
     /**
      * Parse the passed POST request.
@@ -63,70 +57,6 @@ class CloudMailinEmail implements EmailInterface
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public function getTo()
-    {
-        return $this->to;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getBody()
-    {
-        return $this->body;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getSubject()
-    {
-        return $this->subject;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getFrom()
-    {
-        return $this->from['raw'];
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getFromAddress()
-    {
-        return $this->from['address'];
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getFromName()
-    {
-        return $this->from['name'];
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getMessageID()
-    {
-        return $this->messageID;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getRecipients()
-    {
-        return $this->recipients;
-    }
-
-    /**
      * Extract the body from a multipart message.
      *
      * Parse the multipart formatted email request and extract the body.
@@ -141,30 +71,12 @@ class CloudMailinEmail implements EmailInterface
     {
         if ($request->request->get('plain', FALSE)) {
             // Normalize new-lines.
-            return str_replace(array("\r\n", "\r"), "\n", trim($request->request->get('plain')));
+            return $this->normalizePlainBody($request->request->get('plain'));
         } else {
             if ($request->request->get('html', FALSE)) {
                 $html = $request->request->get('html');
 
-                // Normalize new lines.
-                $html = str_replace(array("\r\n", "\r"), "\n", $html);
-
-                // Add new lines after all closing divs or paragraphs, to simulate
-                // plain new lines.
-                $html = preg_replace('/<\/div\s*>\n*/i', "</div>\n", $html);
-                $html = preg_replace('/<\/p\s*>\n*/i', "</p>\n\n", $html);
-
-                // Replace brs with newlines.
-                $html = preg_replace('/<br\s*\/?>\n*/i', "\n", $html);
-
-                // Remove all tags.
-                $html = trim(strip_tags($html));
-
-                // We assume we never have more than 2 subsequent new lines.
-                // Markdown wouldn't parse it like that anyway.
-                $html = preg_replace('/\n{3,}/', "\n\n", $html);
-
-                return $html;
+                return $this->normalizeHTMLBody($html);
             } else {
                 // We treat this as an empty body.
                 return '';
@@ -319,43 +231,4 @@ class CloudMailinEmail implements EmailInterface
 
         throw new \Exception("No headers found.");
     }
-
-    /**
-     * Extract the name information from an RFC email recipient string.
-     *
-     * Extract the name of a recipient from a string like
-     * "John Doe <john.doe@domain.com>".
-     *
-     * @param string $recipient
-     *   The raw recipient string.
-     *
-     * @return string
-     *   The extracted name, or an empty string if none was found.
-     */
-    protected function extractRecipientName($recipient)
-    {
-        $match = array();
-        preg_match('/(.+)\s*</', $recipient, $match);
-        return !empty($match[1]) ? trim($match[1], ' "\'') : '';
-    }
-
-    /**
-     * Extract the address information from an RFC email recipient string.
-     *
-     * Extract the address of a recipient from a string like
-     * "John Doe <john.doe@domain.com>".
-     *
-     * @param string $recipient
-     *   The raw recipient string.
-     *
-     * @return string
-     *   The extracted address.
-     */
-    protected function extractRecipientAddress($recipient)
-    {
-        $match = array();
-        preg_match('/(\s|.<|^)([\w._%+-]+@[\w.-]+\.\w{2,4})>?$/i', $recipient, $match);
-        return !empty($match[2]) ? $match[2] : '';
-    }
-
 }
