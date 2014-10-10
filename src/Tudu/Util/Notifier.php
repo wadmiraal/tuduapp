@@ -53,10 +53,10 @@ class Notifier
             $body .= "--[$num] $task--\n";
         }
 
-        $from = $conf['tudu.emails.update'];
+        $from = $conf['tudu.emails.update']['address'];
         if (!empty($conf['tudu.emails.names'])) {
             $name = $conf['tudu.emails.names'][array_rand($conf['tudu.emails.names'])];
-            $from = "\"$name\" <$from>"; 
+            $from = "\"$name\" <$from>";
         }
 
         if (!empty($conf['tudu.emails.signatures.html'])) {
@@ -74,7 +74,7 @@ class Notifier
                         'From: ' . $from,
                         'In-Reply-To: ' . $participant->getLastMessageID(),
                     ))
-                );   
+                );
             }
         }
 

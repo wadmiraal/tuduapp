@@ -32,7 +32,7 @@ class Main
         $email = new CloudMailinEmail($request);
 
         switch ($email->getTo()) {
-            case $conf['tudu.emails.create']:
+            case $conf['tudu.emails.create']['address']:
                 $todo = $app['todo_db_service'];
 
                 list($description, $tasks) = Parser::extractTodoList($email->getBody());
@@ -63,7 +63,7 @@ class Main
                 return new Response('Todo list created, [id:' . $todo->getID() . ']', 201);
                 break;
 
-            case $conf['tudu.emails.update']:
+            case $conf['tudu.emails.update']['address']:
                 $todoID = Parser::extractTodoID($email->getSubject());
 
                 if (!empty($todoID)) {
@@ -115,7 +115,7 @@ class Main
                         } catch (\Exception $e) {}
                         break;
 
-                    default:                        
+                    default:
                     case Parser::COMMENT:
                         // @todo
                         break;

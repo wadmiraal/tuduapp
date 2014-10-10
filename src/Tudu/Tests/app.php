@@ -15,8 +15,18 @@ $conf['db.options'] = array(
     'path'     => __DIR__ . '/../../../.tmp/' . uniqid() . '.db',
 );
 
-$conf['tudu.emails.create'] = 'new@tuduapp.com';
-$conf['tudu.emails.update'] = 'please-reply@tuduapp.com';
+$conf['tudu.emails.create'] = array(
+    'address' => 'new@tuduapp.com',
+    'username' => '',
+    'password' => '',
+);
+
+$conf['tudu.emails.update'] = array(
+    'address' => 'please-reply@tuduapp.com',
+    'username' => '',
+    'password' => '',
+);
+
 $conf['tudu.emails.names'] = array(
     'Tudu name',
 );
