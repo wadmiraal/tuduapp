@@ -19,12 +19,14 @@ $conf['tudu.emails.create'] = array(
     'address' => 'new@tuduapp.com',
     'username' => '',
     'password' => '',
+    'host' => '',
 );
 
 $conf['tudu.emails.update'] = array(
     'address' => 'please-reply@tuduapp.com',
     'username' => '',
     'password' => '',
+    'host' => '',
 );
 
 $conf['tudu.emails.names'] = array(
