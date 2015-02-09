@@ -145,7 +145,7 @@ class MainTest extends WebTestCase
         $tests = array(
             'Add a new task' => array(
                 'post' => array(
-                    'plain' => 'Add: This is a new task',
+                    'plain' => 'Add This is a new task',
                     'headers' => array(
                         'From' => 'Test Bot <test@bot.com>',
                         'To'   => 'please-reply@tuduapp.com',

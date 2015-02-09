@@ -85,7 +85,7 @@ class Parser
         $body = trim(str_replace(array("\r\n", "\r"), "\n", $body));
         $match = array();
 
-        if (preg_match('/^add\s*:\n*(.+)/i', $body, $match)) {
+        if (preg_match('/^add[\s\n]*(.+)/i', $body, $match)) {
             return array(self::ADD, trim($match[1]));
         } else if (preg_match('/^delete\s*([0-9]+)/i', $body, $match)) {
             return array(self::DELETE, (int) $match[1]);
