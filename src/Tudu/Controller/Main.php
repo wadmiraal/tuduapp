@@ -25,11 +25,22 @@ class Main
      * Notifies the participants of the changes/creation via the
      * Tudu\Util\Notifier class.
      */
-    public function inboxAction(Application $app, Request $request)
+    public function inboxAction($service, $securityKey, Application $app, Request $request)
     {
         $conf = $app['conf'];
 
-        $email = new CloudMailinEmail($request);
+        if (!in_array($securityKey, $conf['security.keys'])) {
+            return new Response("Access denied", 403);
+        }
+
+        switch($service) {
+            case 'cloudmailin':
+                $email = new CloudMailinEmail($request);
+                break;
+            case 'mailgun':
+                $email = new CloudMailinEmail($request);
+                break;
+        }
 
         switch ($email->getTo()) {
             case $conf['tudu.emails.create']['address']:

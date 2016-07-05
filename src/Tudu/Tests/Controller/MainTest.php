@@ -106,7 +106,7 @@ class MainTest extends WebTestCase
         );
 
         foreach ($tests as $label => $data) {
-            $crawler = $client->request('POST', '/inbox', $data['post']);
+            $crawler = $client->request('POST', '/inbox/cloudmailin/security-key', $data['post']);
             $this->assertTrue($client->getResponse()->isSuccessful(), "Request is successful.");
             $this->assertContains('Todo list created', $client->getResponse()->getContent(), "The response contains the message saying the list was created.");
 
@@ -257,7 +257,7 @@ class MainTest extends WebTestCase
         );
 
         foreach ($tests as $label => $data) {
-            $crawler = $client->request('POST', '/inbox', $data['post']);
+            $crawler = $client->request('POST', '/inbox/cloudmailin/security-key', $data['post']);
             $this->assertTrue($client->getResponse()->isSuccessful(), "Request is successful.");
             $this->assertContains('Todo list updated', $client->getResponse()->getContent(), "The response contains the message saying the list was created.");
 

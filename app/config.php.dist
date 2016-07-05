@@ -10,7 +10,9 @@ $conf['db.options'] = array(
     'path'     => __DIR__ . '/app.db',
 );
 
-$conf['cron_key'] = 'my-cron-secret-key';
+$conf['security.keys'] = array(
+    'my-cron-secret-key',
+);
 
 $conf['tudu.emails.create'] = array(
     'address' => 'new@tuduapp.com',

@@ -5,4 +5,5 @@
  * Route definitions.
  */
 
-$app->post('/inbox', 'Tudu\Controller\Main::inboxAction');
+$app->post('/inbox/{service}/{securityKey}', 'Tudu\Controller\Main::inboxAction');
+

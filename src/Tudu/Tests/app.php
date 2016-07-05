@@ -15,6 +15,8 @@ $conf['db.options'] = array(
     'path'     => __DIR__ . '/../../../.tmp/' . uniqid() . '.db',
 );
 
+$conf['security.keys'] = array('security-key');
+
 $conf['tudu.emails.create'] = array(
     'address' => 'new@tuduapp.com',
     'username' => '',
