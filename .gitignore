@@ -8,3 +8,5 @@ Prototype/.sass-cache/
 *.sublime-*
 Prototype/emails.log
 app/config.php
+composer.phar
+
