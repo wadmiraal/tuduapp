@@ -5,6 +5,7 @@ plugins {
 sonarqube {
   properties {
     property "sonar.projectKey", "gradle:tuduapp"
+    property "sonar.sources", "src/"
   }
 }
 
