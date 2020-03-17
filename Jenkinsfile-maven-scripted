@@ -5,7 +5,9 @@ node {
 
   stage('SonarQube Analysis') {
     withSonarQubeEnv() {
-      sh "mvn sonar:sonar"
+      withMaven() {
+        sh "mvn sonar:sonar"
+      }
     }
   }
 }
