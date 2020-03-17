@@ -1,0 +1,27 @@
+pipeline {
+  agent any
+
+  stages {
+    stage('SonarQube Analysis') {
+      environment {
+        maven
+      }
+
+      steps {
+        // Name is really required... Empty string works, BUT will make waitForQualityGate below fail.
+        withSonarQubeEnv('Local SQ') {
+          sh "mvn sonar:sonar"
+        }
+      }
+    }
+
+    // Requires Webhook setup in SonarQube
+    stage('SonarQube Quality Gate') {
+      steps {
+        timeout(time: 1, unit: 'HOURS') {
+          waitForQualityGate abortPipeline: true
+        }
+      }
+    }
+  }
+}
