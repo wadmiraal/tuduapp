@@ -5,7 +5,7 @@ node {
 
   stage('SonarQube Analysis') {
     withSonarQubeEnv() {
-      withMaven() {
+      withGradle() {
         sh "gradle sonarqube"
       }
     }
