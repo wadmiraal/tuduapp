@@ -5,11 +5,7 @@ node {
 
   stage('SonarQube Analysis') {
     withSonarQubeEnv() {
-      // Requires https://plugins.jenkins.io/gradle/ AND the `gradle:` parameter
-      // is required if nothing is overridden in the Build config.
-      withGradle(gradle: 'Default Gradle') {
-        sh "gradle sonarqube"
-      }
+      sh "./gradlew sonarqube"
     }
   }
 }
