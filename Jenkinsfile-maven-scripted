@@ -3,6 +3,14 @@ node {
   stage('SCM') {
     checkout scm
   }
+  
+  stage('Build') {
+    // Requires https://plugins.jenkins.io/pipeline-maven/ AND the `maven:` parameter
+    // is required if nothing is overridden in the Build config.
+    withMaven(maven: 'Default Maven') {
+      sh "mvn clean verify"
+    }
+  }
 
   stage('SonarQube Analysis') {
     withSonarQubeEnv() {
