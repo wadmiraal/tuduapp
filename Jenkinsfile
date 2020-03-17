@@ -10,7 +10,7 @@ pipeline {
 
     stage('SonarQube analysis') {
       tools {
-        tool 'SonarScanner'
+        hudson.plugins.sonar.SonarRunnerInstallation 'SonarScanner'
       }
 
       steps {
