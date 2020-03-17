@@ -3,12 +3,18 @@ pipeline {
   agent any
 
   stages {
-    stage('SonarQube Analysis') {
-      tools {
-        // Name is required...
-        maven 'Default Maven'
+    tools {
+      // Name is required...
+      maven 'Default Maven'
+    }
+      
+    stage('Build') {
+      steps {
+        sh 'mvn clean verify'
       }
-
+    }
+    
+    stage('SonarQube Analysis') {
       steps {
         // Name is really required... Empty string works, BUT will make waitForQualityGate below fail.
         withSonarQubeEnv('Local SQ') {
