@@ -10,3 +10,5 @@ Prototype/emails.log
 app/config.php
 composer.phar
 
+.scannerwork/
+target/
