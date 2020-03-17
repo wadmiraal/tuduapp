@@ -11,6 +11,7 @@ node {
   }
 }
 
+// Requires Webhook setup in SonarQube
 stage('SonarQube Quality Gate') {
   timeout(time: 1, unit: 'HOURS') {
     def qg = waitForQualityGate()
