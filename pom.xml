@@ -4,5 +4,11 @@
     <groupId>net.wadmiraal</groupId>
     <artifactId>tuduapp</artifactId>
     <version>1.0-SNAPSHOT</version>
+    
+    <properties>
+      <sonar.projectKey>net.wadmiraal:tuduapp</sonar.projectKey>
+      <sonar.projectName>Tudu App : Maven</sonar.projectName>
+      <sonar.sources>src/</sonar.sources>
+    </properties>
 </project>
 
