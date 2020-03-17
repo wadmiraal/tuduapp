@@ -14,6 +14,7 @@ pipeline {
       }
     }
 
+    // Requires Webhook setup in SonarQube
     stage('SonarQube Quality Gate') {
       steps {
         timeout(time: 1, unit: 'HOURS') {
