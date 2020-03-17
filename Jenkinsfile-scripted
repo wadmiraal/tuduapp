@@ -3,12 +3,14 @@ node {
     checkout scm
   }
 
-  stage('SonarQube analysis') {
+  stage('SonarQube Analysis') {
     def scannerHome = tool 'SonarScanner';
     withSonarQubeEnv() {
       sh "${scannerHome}/bin/sonar-scanner"
     }
+  }
 
+  stage('SonarQube Quality Gate') {
     timeout(time: 1, unit: 'HOURS') {
       def qg = waitForQualityGate()
       if (qg.status != 'OK') {
