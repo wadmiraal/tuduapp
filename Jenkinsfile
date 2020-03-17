@@ -8,6 +8,7 @@ pipeline {
       }
 
       steps {
+        // Name is really required... Empty string works, BUT will make waitForQualityGate below fail.
         withSonarQubeEnv('Local SQ') {
           sh "${SCANNER_HOME}/bin/sonar-scanner"
         }
