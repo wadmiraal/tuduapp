@@ -1,3 +1,4 @@
+// Requires pom.xml; completely ignores sonar-project.properties
 pipeline {
   agent any
 
