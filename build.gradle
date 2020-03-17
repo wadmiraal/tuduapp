@@ -4,7 +4,7 @@ plugins {
 
 sonarqube {
   properties {
-    property "sonar.projectKey", "tuduapp"
+    property "sonar.projectKey", "gradle:tuduapp"
   }
 }
 
