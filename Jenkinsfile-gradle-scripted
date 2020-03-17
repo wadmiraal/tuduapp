@@ -5,7 +5,8 @@ node {
 
   stage('SonarQube Analysis') {
     withSonarQubeEnv() {
-      withGradle() {
+      // Requires https://plugins.jenkins.io/gradle/
+      withGradle {
         sh "gradle sonarqube"
       }
     }
