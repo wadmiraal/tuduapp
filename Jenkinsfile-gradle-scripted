@@ -1,3 +1,4 @@
+// Requires build.gradle; completely ignores sonar-project.properties
 node {
   stage('SCM') {
     checkout scm
