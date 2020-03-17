@@ -1,13 +1,13 @@
 // Requires pom.xml; completely ignores sonar-project.properties
 pipeline {
   agent any
+  
+  tools {
+    // Name is required...
+    maven 'Default Maven'
+  }
 
-  stages {
-    tools {
-      // Name is required...
-      maven 'Default Maven'
-    }
-      
+  stages {      
     stage('Build') {
       steps {
         sh 'mvn clean verify'
