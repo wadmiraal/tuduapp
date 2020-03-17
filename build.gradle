@@ -1,17 +1,4 @@
-buildscript {
-  repositories {
-    mavenCentral()
-  }
-
-  dependencies {
-    classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.8'
-  }
-}
-
-apply plugin: 'org.sonarqube'
-sonarqube {
-    properties {
-        property 'sonar.projectVersion', "1.0-SNAPSHOT"
-    }
+plugins {
+  id "org.sonarqube" version "2.7"
 }
 
