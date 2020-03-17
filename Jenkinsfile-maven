@@ -3,7 +3,7 @@ pipeline {
 
   stages {
     stage('SonarQube Analysis') {
-      environment {
+      tools {
         // Name is required...
         maven 'Default Maven'
       }
