@@ -1,3 +1,4 @@
+// Requires pom.xml; completely ignores sonar-project.properties
 node {
   stage('SCM') {
     checkout scm
