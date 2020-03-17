@@ -9,13 +9,13 @@ pipeline {
     }
 
     stage('SonarQube analysis') {
-      tools {
-        hudson.plugins.sonar.SonarRunnerInstallation 'SonarScanner'
+      environment {
+        SCANNER_HOME = tool 'SonarScanner'
       }
 
       steps {
         withSonarQubeEnv() {
-          sh "sonar-scanner"
+          sh "${SCANNER_HOME}/bin/sonar-scanner"
         }
       }
     }
